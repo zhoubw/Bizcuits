@@ -19,3 +19,29 @@ liviable (name tbd)
 - [ ] Start working on the basic "suggestion" page, without design. We don't need things to look good yet; we need it to work.
 - [ ] A neat idea I came up with: Control Center. It's a site that's basically an interface used to manage the posts. This way they can be accessed without digging into the code. Do it or not?
 
+####Alright, the structure. (Check for everything complete)
+ - [ ] Front page
+  - [ ] Most popular ideas
+  - [ ] Newest ideas
+  - [ ] Search bar
+  - [ ] Login/create account
+  - [ ] Create a new idea
+   - [ ] Categories
+   - [ ] Content
+   - [ ] Pictures (if available)
+ - [ ] Search page
+  - [ ] Categories: zip code, street, city, etc. (We need to decide on a bare minimum)
+ - [ ] Idea page
+  - [ ] Basic idea + carousel for pictures (if applicable, probably not. I haven't thought this through)
+  - [ ] Comment chains
+  - [ ] Rating
+ - [ ] Idea (backend)
+  - [ ] Age: how long the idea has been alive
+  - [ ] Rating
+  - [ ] Number of votes
+  - [ ] Delta: the power of every new vote
+ - [ ] Account page
+  - [ ] Voting history
+  - [ ] Your total rating over all of your posts
+  - [ ] Your ideas
+  - [ ] Any notifications/messages from admins only
