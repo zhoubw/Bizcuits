@@ -18,6 +18,7 @@ liviable (name tbd)
 - [ ] Start working on the front page, with design. Why front page first? Because things have to work.
 - [ ] Start working on the basic "suggestion" page, without design. We don't need things to look good yet; we need it to work.
 - [ ] A neat idea I came up with: Control Center. It's a site that's basically an interface used to manage the posts. This way they can be accessed without digging into the code. Do it or not?
+- [ ] Another idea: pins on a Google map?
 
 ####Alright, the structure. (Check for everything complete)
  - [ ] Front page
