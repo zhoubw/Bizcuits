@@ -14,6 +14,17 @@ db = client['softdev2015']
 
 app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 
+
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+@app.route('/search')
+def search():
+    return "HELP WHAT DO AHHHHHHHHHHH"
+    
+
+
 if __name__ == "__main__":
     app.debug = True
     print client
