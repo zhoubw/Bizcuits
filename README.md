@@ -1,4 +1,4 @@
-liviable (name tbd)
+Bizcuit (decided name)
 ========
 ###Barak Zhou, Max Zhou, Ling Dong, Ivy Wong
 
