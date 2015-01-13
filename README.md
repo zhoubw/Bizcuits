@@ -30,12 +30,9 @@ Bizcuit (decided name)
    - [ ] Categories
    - [ ] Content
    - [ ] Pictures (if available)
+   - [ ] Ideas + comment chains
  - [ ] Search page
   - [ ] Categories: zip code, street, city, etc. (We need to decide on a bare minimum)
- - [ ] Idea page
-  - [ ] Basic idea + carousel for pictures (if applicable, probably not. I haven't thought this through)
-  - [ ] Comment chains
-  - [ ] Rating
  - [ ] Idea (backend)
   - [ ] Age: how long the idea has been alive
   - [ ] Rating
