@@ -20,6 +20,10 @@ app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 def index():
     return render_template("index.html")
 
+@app.route("/front")
+def front():
+    return render_template("front.html")
+
 @app.route('/search', methods = ['POST'])
 def search():
     error = ""
