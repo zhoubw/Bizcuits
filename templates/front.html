@@ -22,7 +22,12 @@
         <a href="/front" class="pure-menu-heading">Bizcuits</a>
         <ul>
             <li class="pure-menu-selected"><a href="/front">Home</a></li>
-            <li><a href="/explore">Explore</a></li>
+            <li>
+                <form class="pure-form" method="POST" action="{{ url_for('search') }}">
+                    <input type="text" placeholder="Search..." name="query"></input>
+                    <button class="pure-button" type="submit">Search</button>
+                </form>
+            </li>
             <li><a href="/account">Account</a></li>
             <li><a href="/">Logout</a></li>
         </ul>
