@@ -1,0 +1,11 @@
+Max
+- Login stuff
+- MongoLab
+
+Ivy + Ling
+- Front page
+- all pages in general
+
+Barak
+- MongoDB entries
+- Redirects

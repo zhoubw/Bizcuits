@@ -20,6 +20,10 @@ app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 def index():
     return render_template("index.html")
 
+@app.route("/front")
+def front():
+    return render_template("front.html")
+
 @app.route('/search', methods = ['POST'])
 def search():
     error = ""
@@ -31,7 +35,7 @@ def search():
         else:
             error = "Location not found."
             return render_template("results.html", error=error)
-    return "HELP WHAT DO AHHHHHHHHHHH"
+        return "HELP WHAT DO AHHHHHHHHHHH"
     
 @app.route('/add', methods= ["GET", "POST"])
 def add():
@@ -39,11 +43,11 @@ def add():
     if request.method == "POST":
         name = request.form['name']
         address = request.form['address']
-        try:
-            location = {'name': name, 'address': address}
+        location = {'name': name, 'address': address}
+        if locations.find_one({"name": location}) != None:
             location_id = locations.insert(location)
-            return "Successfully added " + location.name + "!"
-        except:
+            return "Successfully added " + location['name'] + "!"
+        else:
             return "Location already in database."
     elif request.method == "GET":
         return render_template("add.html")
