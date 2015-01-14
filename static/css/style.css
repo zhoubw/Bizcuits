@@ -1,0 +1,6 @@
+body {
+    background: url(/static/background.jpg);
+    background-size: 1440px 800px;
+    background-repeat:no-repeat;
+    opacity: 0.9;
+}
