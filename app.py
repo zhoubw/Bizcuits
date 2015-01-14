@@ -2,6 +2,8 @@ from pymongo import MongoClient
 from flask import Flask, render_template, request, redirect, session, url_for, escape, flash
 from datetime import datetime
 
+import database
+
 app = Flask(__name__)
 
 client = MongoClient('mongodb://Citronnade:Citronnade@ds031271.mongolab.com:31271/softdev2015')
@@ -21,6 +23,7 @@ def index():
     return render_template("index.html")
 
 @app.route("/front")
+#@app.route("/")
 def front():
     return render_template("front.html")
 
@@ -28,14 +31,13 @@ def front():
 def search():
     error = ""
     if request.method == "POST":
-        location = request.form['location']
-        response = locations.find_one({"name": location})
+        location = request.form['query']
+        response = database.search(location)
         if response != None:
             return render_template("results.html", location=response)
         else:
             error = "Location not found."
             return render_template("results.html", error=error)
-        return "HELP WHAT DO AHHHHHHHHHHH"
     
 @app.route('/add', methods= ["GET", "POST"])
 def add():
