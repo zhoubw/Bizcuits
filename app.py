@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from flask import Flask, render_template, request, redirect, session, url_for, escape, flash
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import database
 
@@ -53,6 +54,16 @@ def add():
             return "Location already in database."
     elif request.method == "GET":
         return render_template("add.html")
+
+@app.route('/login', methods = ["GET", "POST"])
+def login():
+    error = ""
+    if request.method == "POST":
+        user = request.form['user'] #assuming SSL connection so this is okay
+        password = request.form['password']
+        pass_hash = generate_password_hash(password)
+        #use check_password_hash(hash, password) to authenticate
+    
 
 if __name__ == "__main__":
     app.debug = True
