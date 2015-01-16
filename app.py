@@ -8,20 +8,20 @@ import database
 app = Flask(__name__)
 
 client = MongoClient('mongodb://Citronnade:Citronnade@ds031271.mongolab.com:31271/softdev2015')
-db = client['softdev2015']
-locations = db['locations']
+db = client['softdev2015'] #database in softdev2015
+locations = db['locations'] #collection
+users = db['users'] #collection
 
-# db = client.test_database
-# Possible documents:
+# Possible documents/collections:
 # - Idea posts
 # - Comment chains
 
 app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 
-
+#login/home page should be front page
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("front.html")
 
 @app.route("/front")
 #@app.route("/")
