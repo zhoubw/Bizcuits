@@ -19,15 +19,22 @@ users = db['users'] #collection
 app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 
 #login/home page should be front page
-@app.route('/')
-def index():
-    return render_template("front.html")
+#@app.route('/')
+#def index():
+#    return render_template("deadfront.html")
 
-@app.route("/front")
-#@app.route("/")
+@app.route("/front", methods = ['POST'])
+@app.route("/", methods = ['POST'])
 def front():
-    return render_template("front.html")
+    if request.method == "POST":
+        query = request.form['query']
+        if query == "":
+            #error
+            return render_template("deadfront.html") #testing
+        return render_template("search_results.html", query=query)
+    return render_template("deadfront.html") #testing
 
+#this will probably be gone
 @app.route('/search', methods = ['POST'])
 def search():
     error = ""
