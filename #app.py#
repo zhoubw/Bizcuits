@@ -25,9 +25,7 @@ def index():
     #return render_template("index.html")
     return render_template("front.html")
 
-@app.route('/testing')
-def test():
-    return render_template("front1.html")
+@app.route('/')
 
 @app.route('/search', methods = ['POST'])
 def search():
