@@ -64,7 +64,7 @@ def login():
         password = request.form['password']
         pass_hash = generate_password_hash(password)
         #use check_password_hash(hash, password) to authenticate
-    
+    return render_template("login.html")
 
 if __name__ == "__main__":
     app.debug = True
