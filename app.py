@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from flask import Flask, render_template, request, redirect, session, url_for, escape, flash
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
 
 import database
 
@@ -23,6 +24,25 @@ app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 #def index():
 #    return render_template("deadfront.html")
 
+#checks if the username is available
+#returns true if available
+def check_username(username):
+    if users.find_one({'username':username}) != None:
+        return False # username already exists
+    return True # available, does not exist yet
+
+# registers a user. Returns the user_id
+def register_user(username, password):
+    user = {"username":username, "password":password}
+    user_id = users.insert(user)
+    return user_id
+
+# checks if the username and password logs in
+def check_login(username, password):
+    if users.find_one({"username":username,"password":password}) == None:
+        return False
+    return True
+
 #for pages that require login
 def login_required(f):
     @wraps(f)
@@ -37,8 +57,8 @@ def nologin(f):
     @wraps(f)
     def inner(*args, **kwargs):
         if "username" in session:
-            pass
-            return redirect(url_for("home")) # I have no idea what it is yet
+            flash(session['username'] + " is logged in!")
+            return redirect(url_for("index")) # I have no idea what it is yet
         return f(*args, **kwargs)
     return inner
 
@@ -59,14 +79,13 @@ def front():
 
 @app.route('/')
 @app.route('/index')
+@app.route('/home')
 def index():
     #return render_template("index.html")
-    return render_template("front1.html")
-
+    return render_template("front.html", session=session)
 @app.route('/testing')
 def test():
-    return render_template("front1.html")
-
+    return render_template("front.html")
 
 @app.route('/search', methods = ['POST'])
 def search():
@@ -96,23 +115,77 @@ def add():
         return render_template("add.html")
 
 @app.route('/login', methods = ["GET", "POST"])
+@nologin
 def login():
     error = ""
     if request.method == "POST":
-        user = request.form['user'] #assuming SSL connection so this is okay
-        password = request.form['password']
-        pass_hash = generate_password_hash(password)
+        username = request.form['loginUsername'] #assuming SSL connection so this is okay
+        password = request.form['loginPassword']
+        #pass_hash = generate_password_hash(password) #wtf do I do with this
         #use check_password_hash(hash, password) to authenticate
+        if check_login(username,password):
+            session['username'] = username
+            return redirect(url_for('index'))
+        else: #invalid
+            #message for invalid user/pass combo
+            print "invalid login"
+            
     return render_template("login.html")
 
+@app.route('/logout')
+@login_required
+def logout():
+    session.pop('username',None)
+    return redirect(url_for('index'))
+
 @app.route('/register', methods=["GET","POST"])
+@nologin
 def register():
+    if request.method == "POST":
+        username = request.form['registerUsername']
+        password = request.form['registerPassword']
+        confirmPassword = request.form['confirmPassword']
+        if check_username(username):
+            if not password == confirmPassword: #passwords do not match
+                print "passwords do not match"
+                pass #need some kind of message
+            else:
+                register_user(username,password)
+        else:
+            #username is taken
+            flash(username + " is taken!")
+            #need some kind of message
+            pass
     return render_template("register.html")
 
+@app.route('/control',methods=["GET","POST"])
+def control():
+    if request.method == "GET":
+        print request.form.values()
+        if 'clear-users' in request.form.values():
+            print "+++++++++++++++++++++++"
+            users.remove()
+            #elif request.form['delete-user']:
+        elif 'delete-user' in request.form.values():
+            users.remove({'_id':request.form.get('delete-user')})
+            #elif request.form['delete-location']:
+        elif 'delete-location' in request.form.values():
+            users.remove({'_id':request.form.get('delete-location')})
+
+    else:
+        locationsf = locations.find()
+        usersf = users.find()
+        return render_template("control.html",session=session,locations=locationsf,users=usersf)
+        
+    locationsf = locations.find()
+    usersf = users.find()
+    #return render_template("control.html",session=session,locations=locations,users=users)
+    return render_template("control.html",session=session,locations=locationsf,users=usersf)
 
 if __name__ == "__main__":
     app.debug = True
     print client
     print db
+    #users.remove({'username':'CleverBot'})
     app.run(port=5005)
 

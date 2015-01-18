@@ -34,9 +34,17 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% block navcompright %}
-                    <li><a href="/register">Sign Up</a></li>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/about">About</a></li>
+                    <!--<li><a href="/register">Sign Up</a></li>-->
+                    <!--<li><a href="/login">Login</a></li>-->
+                    <!--<li><a href="/about">About</a></li>-->
+		    {% if 'username' in session %}
+	            <a class="navbar-brand">{{session['username']}}</a>
+		    <li><a href="/logout">Logout</a></li>
+		    {% else %}
+		    <li><a href="/register">Sign Up</a></li>
+		    <li><a href="/login">Login</a></li>
+		    <li><a href="/about">About</a></li>
+		    {% endif %}
                     {% endblock navcompright %}
                 </ul>
             </div><!-- /.navbar-collapse -->
