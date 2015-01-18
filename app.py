@@ -23,7 +23,6 @@ app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 #def index():
 #    return render_template("deadfront.html")
 
-<<<<<<< HEAD
 #for pages that require login
 def login_required(f):
     @wraps(f)
@@ -44,7 +43,7 @@ def nologin(f):
     return inner
 
     
-
+'''
 @app.route("/front", methods = ['POST'])
 @app.route("/", methods = ['POST'])
 def front():
@@ -55,20 +54,20 @@ def front():
             return render_template("deadfront.html") #testing
         return render_template("search_results.html", query=query)
     return render_template("deadfront.html") #testing
-
+'''
 #this will probably be gone
-=======
+
 @app.route('/')
 @app.route('/index')
 def index():
     #return render_template("index.html")
-    return render_template("front.html")
+    return render_template("front1.html")
 
 @app.route('/testing')
 def test():
     return render_template("front1.html")
 
->>>>>>> origin/frontling
+
 @app.route('/search', methods = ['POST'])
 def search():
     error = ""
