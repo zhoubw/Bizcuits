@@ -23,6 +23,27 @@ app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 #def index():
 #    return render_template("deadfront.html")
 
+#for pages that require login
+def login_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if "username" in session:
+            return f(*args, **kwargs)
+        return redirect(url_for("login")) #maybe need this to be sth else
+    return inner
+
+#for pages that cannot use login
+def nologin(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if "username" in session:
+            pass
+            return redirect(url_for("home")) # I have no idea what it is yet
+        return f(*args, **kwargs)
+    return inner
+
+    
+
 @app.route("/front", methods = ['POST'])
 @app.route("/", methods = ['POST'])
 def front():
