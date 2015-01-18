@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from flask import Flask, render_template, request, redirect, session, url_for, escape, flash
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -160,22 +161,21 @@ def register():
 
 @app.route('/control',methods=["GET","POST"])
 def control():
-    if request.method == "GET":
-        print request.form.values()
-        if 'clear-users' in request.form.values():
-            print "+++++++++++++++++++++++"
+    if request.method == 'POST':
+        if 'clear-users' in request.form:
             users.remove()
-            #elif request.form['delete-user']:
-        elif 'delete-user' in request.form.values():
-            users.remove({'_id':request.form.get('delete-user')})
-            #elif request.form['delete-location']:
-        elif 'delete-location' in request.form.values():
-            users.remove({'_id':request.form.get('delete-location')})
+        elif 'delete-user' in request.form:
+            _id = request.form['delete-user']
+            users.remove({'_id':ObjectId(_id)})
+        elif 'delete-location' in request.form:
+            print "OK=================================="
+            _id = request.form['delete-location']
+            print _id
+            print locations.remove({'_id':ObjectId(_id)})
 
-    else:
-        locationsf = locations.find()
-        usersf = users.find()
-        return render_template("control.html",session=session,locations=locationsf,users=usersf)
+    locationsf = locations.find()
+    usersf = users.find()
+    return render_template("control.html",session=session,locations=locationsf,users=usersf)
         
     locationsf = locations.find()
     usersf = users.find()
@@ -184,8 +184,8 @@ def control():
 
 if __name__ == "__main__":
     app.debug = True
-    print client
-    print db
+    #print client
+    #print db
     #users.remove({'username':'CleverBot'})
     app.run(port=5005)
 

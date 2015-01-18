@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block navcompright %}
+<a class="navbar-brand">Control Center</a>
+{% endblock navcompright %}
+
+{% block content %}
+<!--db-->
+
+<div class="col-md-6">
+  
+  <h3>
+    <form method="POST" action={{url_for('control')}}>
+      Collection: users <button type="submit" class="btn btn btn-danger" name="clear-users" value="clear-users">Delete Everything</button>
+      </form>
+  </h3>
+  
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th></th>
+	<th>#</th>
+	<th>username</th>
+	<th>password</th>
+	<th>_id</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+{% set i = 1 %}
+{% for user in users %}
+      <tr>
+	<td>
+	  <form method="POST" action={{url_for('control')}}>
+	    <button type="submit" class="btn btn-xs btn-danger" name="delete-user" value={{user['_id']}}>Delete</button>
+	  </form>
+	</td>
+	<td>{{ i }}</td>
+        <td>{{user['username']}}</td>
+        <td>{{user['password']}}</td>
+        <td>{{user['_id']}}</td>
+      </tr>
+      {% set i = i + 1 %}
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+  <h3>
+    <form method="POST" action={{url_for('control')}}>
+      Collection: locations <button type="submit" class="btn btn btn-danger" name="clear-LOCKED" value="ok">Locked</button> <!-- not using this atm -->
+    </form>
+  </h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th></th>
+	<th>#</th>
+	<th>name</th>
+	<th>address</th>
+	<th>_id</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+{% set i = 1 %}
+{% for location in locations %}
+      <tr>
+	<td>
+	  <form method="POST" action={{url_for('control')}}>
+	    <button type="submit" class="btn btn-xs btn-danger" name="delete-location" value={{location['_id']}}>Delete</button>
+	  </form>
+	</td>
+	<td>{{ i }}</td>
+        <td>{{location['name']}}</td>
+        <td>{{location['address']}}</td>
+        <td>{{location['_id']}}</td>
+      </tr>
+      {% set i = i + 1 %}
+      {% endfor %}
+
+    </tbody>
+  </table>
+</form>
+
+</div>
+{% endblock content %}
