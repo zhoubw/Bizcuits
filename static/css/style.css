@@ -1,6 +1,16 @@
 body {
-    background: url(/static/background.jpg);
-    background-size: 1440px 800px;
-    background-repeat:no-repeat;
-    opacity: 0.9;
+    #background: url(/static/background.jpg);
+    #background-size: 1440px 800px;
+    #background-repeat:no-repeat;
+    #opacity: 0.9;
+}
+
+.l-box {
+    padding-left: 2em;
+}
+.text-center{
+    text-align: center;
+}
+.voting{
+    padding-top: 1em;
 }

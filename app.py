@@ -23,6 +23,7 @@ app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 #def index():
 #    return render_template("deadfront.html")
 
+<<<<<<< HEAD
 #for pages that require login
 def login_required(f):
     @wraps(f)
@@ -56,6 +57,18 @@ def front():
     return render_template("deadfront.html") #testing
 
 #this will probably be gone
+=======
+@app.route('/')
+@app.route('/index')
+def index():
+    #return render_template("index.html")
+    return render_template("front.html")
+
+@app.route('/testing')
+def test():
+    return render_template("front1.html")
+
+>>>>>>> origin/frontling
 @app.route('/search', methods = ['POST'])
 def search():
     error = ""
@@ -91,7 +104,12 @@ def login():
         password = request.form['password']
         pass_hash = generate_password_hash(password)
         #use check_password_hash(hash, password) to authenticate
-    
+    return render_template("login.html")
+
+@app.route('/register', methods=["GET","POST"])
+def register():
+    return render_template("register.html")
+
 
 if __name__ == "__main__":
     app.debug = True
