@@ -33,7 +33,10 @@
 <hr>
 <p><b>Comments</b></p>
 {% for comment in comments %}
-
+<div class="row">
+    <p><b>{{ comment.author }}</b></p>
+    <p>{{ comment.content }}</p>
+</div>
 {% endfor %}
 
 {% endblock %}
