@@ -91,9 +91,16 @@ def index():
     locs = database.get_locations()
     return render_template("front.html", session=session,locations=locs,get_timestamp=get_timestamp)
 
-@app.route('/testing')
-def test():
-    return render_template("front.html")
+@app.route('/post/<id>', methods=["GET","POST"])
+def post(id=None):
+    curr_loc = database.get_location(id)
+    print curr_loc
+    #curr_comments = database.get_comments(id)
+    if request.method == "GET":
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp)
+    else:
+        #add_comment()
+        return redirect(url_for("post",id=id))
 
 @app.route('/search', methods = ['POST'])
 def search():

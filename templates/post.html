@@ -12,25 +12,28 @@
 </form>
 {% endblock navcomponents %}
 
-{% block content %}
-<h1>Welcome to Bizcuits!</h2>
-<h3>Oldest Ideas</h3>
-<hr>
 <div class="container">
-{% for location in locations %}
+{% block content %}
 <div class="row">
     <div class="col-md-1 text-center">
-        <br>
+    <br>
         <a href="/"><span class="glyphicon glyphicon-chevron-up upvote"></span></a>
         <p class="votes">9000{{ location.votes }}</p>
         <a href="/"><span class="glyphicon glyphicon-chevron-down downvote"></span></a>
     </div>
     <div class="col-md-11">
-        <h2 class="idea-title"><a href="{{ url_for('post', id=location['_id'])}}">{{ location.name }}</a></h2>
-        <p class="idea-address">{{ location.address }}</p>
-        <p class="idea-meta">Added by {{ location.author }} on {{ get_timestamp(location['_id']) }}</p>
+        <h1 class="idea-title">{{ location.name }}</h1>
+        <p class="idea-address"><b>Address: </b>{{ location.address }}</p>
+        <p class="idea-description"><b>Description: </b>{{ location.description }}</p> 
+        <p class="idea-meta">Posted by {{ location.author }} on {{ get_timestamp( location['_id'] ) }}</p>
+        <hr>
     </div>
+    
 </div>
+<hr>
+<p><b>Comments</b></p>
+{% for comment in comments %}
+
 {% endfor %}
-</div>
+
 {% endblock %}

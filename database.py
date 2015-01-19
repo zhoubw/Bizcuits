@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 client = MongoClient('mongodb://Citronnade:Citronnade@ds031271.mongolab.com:31271/softdev2015')
 db = client['softdev2015']
@@ -24,6 +25,10 @@ def add(location):
     else:
         #return "Location already in database."
         return False
+
+def get_location(id):
+    loc = locations.find_one({ "_id": ObjectId(id) })
+    return loc
 
 def get_locations():
     locs = locations.find()
