@@ -24,3 +24,11 @@ body > .container{
     padding-left: 15px;
     background-color: #f5f5f5;
 }
+
+.upvote {
+    color: gray; //maybe find a way to make this colored if clicked
+}
+
+.downvote {
+    color: gray;
+}

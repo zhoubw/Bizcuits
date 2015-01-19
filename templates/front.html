@@ -12,6 +12,25 @@
 </form>
 {% endblock navcomponents %}
 
-{#% block content %#}
-<!--<p>TEMP HELLO WORLD</p>-->
-{#% endblock %#}
+{% block content %}
+<h1>Welcome to Bizcuits!</h2>
+<h3>Oldest Ideas</h3>
+<hr>
+<div class="container">
+{% for location in locations %}
+<div class="row">
+    <div class="col-md-1 text-center">
+        <br>
+        <a href="/"><span class="glyphicon glyphicon-chevron-up upvote"></span></a>
+        <p class="votes">9000{{ location.votes }}</p>
+        <a href="/"><span class="glyphicon glyphicon-chevron-down downvote"></span></a>
+    </div>
+    <div class="col-md-11">
+        <h2 class="idea-title"><a href="/">{{ location.name }}</a></h2>
+        <p class="idea-address">{{ location.address }}</p>
+        <p class="idea-meta">Added by {{ location.author }} on {{ get_timestamp(location['_id']) }}</p>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

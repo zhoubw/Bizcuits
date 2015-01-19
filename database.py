@@ -25,3 +25,6 @@ def add(location):
         #return "Location already in database."
         return False
 
+def get_locations():
+    locs = locations.find()
+    return locs
