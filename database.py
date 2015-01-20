@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 client = MongoClient('mongodb://Citronnade:Citronnade@ds031271.mongolab.com:31271/softdev2015')
 db = client['softdev2015']
 locations = db['locations']
+comments = db['comments']
 
 # db = client.test_database
 # Possible documents:
@@ -26,10 +27,39 @@ def add(location):
         #return "Location already in database."
         return False
 
-def get_location(id):
-    loc = locations.find_one({ "_id": ObjectId(id) })
+def get_location(uid):
+    loc = locations.find_one({ "_id": ObjectId(uid) })
     return loc
 
 def get_locations():
     locs = locations.find()
     return locs
+
+def add_comment(comment=None, content=None, uid=None, author=None): #for transitional purposes until we move dict generation out of app and into database
+    if comment == None:
+        if content == None || uid == None || author == None:
+            return False
+        else:
+            comment = {'postid': uid, 'content': content, 'author': author}
+    if get_location(postid) == None:
+        return False #location not found
+    else:
+        comment_id = comments.insert(comment)
+        return True
+
+def get_comment(commentid=None):
+    if commentid == None:
+        #no comment sent
+        return False
+    else:
+        comment = comments.find_one({"_id": commentid})
+        if commment == None:
+            return False
+        return comment
+
+def get_comments(postid):
+    post = get_location(uid)
+    if post == None:
+        return False
+    post_comments = comments.find('postid': postid)
+    return post_comments
