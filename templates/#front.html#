@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block navcomponents %}
+
+{% endblock navcomponents %}
+
 {% block content %}
 <h1>Welcome to Bizcuits!</h2>
 <h3>Oldest Ideas</h3>
