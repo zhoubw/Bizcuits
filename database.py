@@ -27,20 +27,20 @@ def add(location):
         #return "Location already in database."
         return False
 
-def get_location(uid):
-    loc = locations.find_one({ "_id": ObjectId(uid) })
+def get_location(postid):
+    loc = locations.find_one({ "_id": ObjectId(postid) })
     return loc
 
 def get_locations():
     locs = locations.find()
     return locs
 
-def add_comment(comment=None, content=None, uid=None, author=None): #for transitional purposes until we move dict generation out of app and into database
+def add_comment(comment=None, content=None, postid=None, author=None): #for transitional purposes until we move dict generation out of app and into database
     if comment == None:
-        if content == None || uid == None || author == None:
+        if (content == None) or (postid == None) or (author == None):
             return False
         else:
-            comment = {'postid': uid, 'content': content, 'author': author}
+            comment = {'postid': postid, 'content': content, 'author': author}
     if get_location(postid) == None:
         return False #location not found
     else:
@@ -58,8 +58,8 @@ def get_comment(commentid=None):
         return comment
 
 def get_comments(postid):
-    post = get_location(uid)
+    post = get_location(postid)
     if post == None:
         return False
-    post_comments = comments.find('postid': postid)
+    post_comments = comments.find({'postid': postid})
     return post_comments
