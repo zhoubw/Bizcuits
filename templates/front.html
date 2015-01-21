@@ -9,12 +9,12 @@
 <div class="row">
     <div class="col-md-1 text-center">
         <br>
-        <a href="/"><span class="glyphicon glyphicon-chevron-up upvote"></span></a>
+        <a href="#"><span class="glyphicon glyphicon-chevron-up upvote"></span></a>
         <p class="votes">9000{{ location.votes }}</p>
-        <a href="/"><span class="glyphicon glyphicon-chevron-down downvote"></span></a>
+        <a href="#"><span class="glyphicon glyphicon-chevron-down downvote"></span></a>
     </div>
     <div class="col-md-11">
-        <h2 class="idea-title"><a href="{{ url_for('post', id=location['_id'])}}">{{ location.name }}</a></h2>
+        <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
         <p class="idea-address">{{ location.address }}</p>
         <p class="idea-meta">Added by {{ location.author }} on {{ get_timestamp(location['_id']) }}</p>
     </div>

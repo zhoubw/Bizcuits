@@ -84,23 +84,27 @@ def front():
 #this will probably be gone
 
 @app.route('/')
-@app.route('/index')
-@app.route('/home')
+#@app.route('/index')
+#@app.route('/home')
 def index():
     #return render_template("index.html")
     locs = database.get_locations()
     return render_template("front.html", session=session,locations=locs,get_timestamp=get_timestamp)
 
-@app.route('/post/<id>', methods=["GET","POST"])
-def post(id=None):
-    curr_loc = database.get_location(id)
+@app.route('/post/<postid>', methods=["GET","POST"])
+def post(postid=None):
+    curr_loc = database.get_location(postid)
     print curr_loc
-    #curr_comments = database.get_comments(id)
+    curr_comments = database.get_comments(postid)
     if request.method == "GET":
-        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp)
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments)
+    
     else:
-        #add_comment()
-        return redirect(url_for("post",id=id))
+        author = request.form['author']
+        content = request.form['content']
+        postid = postid
+        database.add_comment(None, content, postid, author)
+        return redirect(url_for("post",postid=postid))
 
 @app.route('/search', methods = ['POST'])
 def search():
