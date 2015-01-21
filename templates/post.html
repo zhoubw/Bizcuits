@@ -2,7 +2,7 @@
 
 
 <div class="container">
-{% block content %}
+  {% block content %}
 <div class="row">
     <div class="col-md-1 text-center">
     <br>
@@ -16,6 +16,9 @@
         <p class="idea-description"><b>Description: </b>{{ location.description }}</p> 
         <p class="idea-meta">Posted by {{ location.author }} on {{ get_timestamp( location['_id'] ) }}</p>
         <hr>
+	<script type="text/javascript" src="/static/js/maptest.js"></script>
+	<!-- need locations -->
+	  <div id="googleMap" style="width:800px;height:600px;"></div>
     </div>
     
 </div>
