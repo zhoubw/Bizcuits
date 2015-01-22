@@ -22,7 +22,6 @@
 	<!-- need locations -->
 	  <div id="googleMap" style="width:800px;height:600px;"></div>
     </div>
-    
 </div>
 <hr>
 <p><b>Comments</b></p>
@@ -36,10 +35,10 @@
 </form>
 {% for comment in comments %}
 <div class="row">
-
-    <p><b>{{ comment.author }}</b></p>
-    <p>{{ comment.content }}</p>
-    <p>{{ comment.postid }}</p>
+    <div class="col-md-10">
+        <p>{{ comment.content }}</p>
+        <p>Posted by <b>{{ comment.author }}</b> on {{ get_timestamp( comment['_id'] ) }}</p>
+    </div>
 </div>
 {% endfor %}
 
