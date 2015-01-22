@@ -17,7 +17,7 @@
         <p class="idea-meta">Posted by {{ location.author }} on {{ get_timestamp( location['_id'] ) }}</p>
         <hr>
 	    <script type="text/javascript">
-	    {% include  {{url_for('static', filename='js/maptest.js')}}  %}
+        <!--{{url_for('static', filename='js/maptest.js')}}-->
 	    </script>
 	    <!-- need locations -->
 	    <div id="googleMap" style="width:800px;height:600px;"></div>
