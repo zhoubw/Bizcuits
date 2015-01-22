@@ -91,6 +91,10 @@ def index():
     locs = database.get_locations()
     return render_template("front.html", session=session,locations=locs,get_timestamp=get_timestamp)
 
+@app.route('/about')
+def about():
+    return render_template("about.html")
+
 @app.route('/post/<postid>', methods=["GET","POST"])
 def post(postid=None):
     curr_loc = database.get_location(postid)
