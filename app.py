@@ -96,8 +96,10 @@ def post(postid=None):
     curr_loc = database.get_location(postid)
     print curr_loc
     curr_comments = database.get_comments(postid)
+    #curr_zipcode = 
+    curr_zipcode = 10282
     if request.method == "GET":
-        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments)
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, zipcode=curr_zipcode)
     
     else:
         author = request.form['author']
