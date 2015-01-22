@@ -14,18 +14,26 @@ comments = db['comments']
 #app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 
 def search(query):
-    response = locations.find_one({"name": query})
+    response = locations.find({"address": query})
     return response
 
-def add(location):
-    #uhm. can you loop through a dict and check that everything is good?
-    if locations.find_one({"name": location}) != None:
+def add(location=None, name=None, address=None, author=None, zipcode=None, desc=None):
+    if (name==None) or (address==None) or (author==None) or (zipcode==None) or (desc==None):
+        return False
+    location = {"address": address, "zipcode": zipcode, "name": name,
+                "author": author, "desc": desc
+    }
+    
+    votes = {"up": 1, "down": 0} #vote dict
+    if locations.find_one({"address": address, "zipcode": zipcode}) != None:
         location_id = locations.insert(location)
         #return "Successfully added " + location['name'] + "!"
         return True
     else:
         #return "Location already in database."
         return False
+
+
 
 def get_location(postid):
     loc = locations.find_one({ "_id": ObjectId(postid) })
@@ -35,12 +43,26 @@ def get_locations():
     locs = locations.find()
     return locs
 
+def sort_votes(post): #sorts either comments or posts by votes
+    try:
+        return post.sorted(key= lambda v: get_votes(v['votes']), reverse=True)
+    except:
+        return False
+
+def get_votes(votes):
+    try:
+        return votes["up"] - votes["down"]
+    except:
+        return False
+
 def add_comment(comment=None, content=None, postid=None, author=None): #for transitional purposes until we move dict generation out of app and into database
     if comment == None:
         if (content == None) or (postid == None) or (author == None):
             return False
         else:
-            comment = {'postid': postid, 'content': content, 'author': author}
+            votes = {"up": 1, "down": 0} #vote dict
+            comment = {'postid': postid, 'content': content, 'author': author,
+                       'votes': votes}
     if get_location(postid) == None:
         return False #location not found
     else:
