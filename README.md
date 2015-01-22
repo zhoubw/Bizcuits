@@ -1,4 +1,4 @@
-Bizcuit (decided name)
+Bizcuits 
 ========
 ###Barak Zhou, Max Zhou, Ling Dong, Ivy Wong
 
