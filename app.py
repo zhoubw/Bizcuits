@@ -2,6 +2,8 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from flask import Flask, render_template, request, redirect, session, url_for, escape, flash
 from datetime import datetime
+import pytz
+from tzlocal import get_localzone
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 
@@ -14,19 +16,14 @@ db = client['softdev2015'] #database in softdev2015
 locations = db['locations'] #collection
 users = db['users'] #collection
 
-# Possible documents/collections:
-# - Idea posts
-# - Comment chains
-
 app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 
-#login/home page should be front page
-#@app.route('/')
-#def index():
-#    return render_template("deadfront.html")
+#timezone stuff
+tz = get_localzone()
 
 def get_timestamp(loc_id):
     date = ObjectId(loc_id).generation_time
+    date = date.astimezone(tz)
     date = date.strftime("%b %d, %Y at %I:%M %p")
     return date
 
