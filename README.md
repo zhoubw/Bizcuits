@@ -25,3 +25,5 @@ Bizcuits
 - [ ] Comments - only users can comment (careful about the html - comment boxes should not even be displayed for non-account users)
 - [ ] Rating
 - [ ] Search engine
+- [ ] install pytz
+- [ ] install tzlocal
