@@ -27,3 +27,6 @@ Bizcuits
 - [ ] Search engine
 - [ ] install pytz
 - [ ] install tzlocal
+- Search buttons:
+  - next to search bar
+  - on search results page
