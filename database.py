@@ -15,16 +15,17 @@ comments = db['comments']
 
 def search(query):
     response = locations.find({"address": query})
-    return response
+    return list(response) #array instead of cursor
 
 def add(location=None, name=None, address=None, author=None, zipcode=None, desc=None):
     if (name==None) or (address==None) or (author==None) or (zipcode==None) or (desc==None):
         return False
+    votes = {"up": 1, "down": 0} #vote dict
     location = {"address": address, "zipcode": zipcode, "name": name,
-                "author": author, "desc": desc
+                "author": author, "desc": desc, "votes": votes
     }
     
-    votes = {"up": 1, "down": 0} #vote dict
+
     if locations.find_one({"address": address, "zipcode": zipcode}) != None:
         location_id = locations.insert(location)
         #return "Successfully added " + location['name'] + "!"
@@ -41,19 +42,19 @@ def get_location(postid):
 
 def get_locations():
     locs = locations.find()
-    return locs
+    return list(locs)  #array instead of cursor
 
 def sort_votes(post): #sorts either comments or posts by votes
     try:
         return post.sorted(key= lambda v: get_votes(v['votes']), reverse=True)
     except:
-        return False
+        return post
 
 def get_votes(votes):
     try:
         return votes["up"] - votes["down"]
     except:
-        return False
+        return 0
 
 def add_comment(comment=None, content=None, postid=None, author=None): #for transitional purposes until we move dict generation out of app and into database
     if comment == None:
@@ -84,4 +85,4 @@ def get_comments(postid):
     if post == None:
         return False
     post_comments = comments.find({'postid': postid})
-    return post_comments
+    return list(post_comments) #array instead of cursor
