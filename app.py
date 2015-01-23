@@ -89,7 +89,13 @@ def front():
 def index():
     #return render_template("index.html")
     locs = database.get_locations()
-    return render_template("front.html", session=session,locations=locs,get_timestamp=get_timestamp)
+    print 'before: ' + str(locs)
+    print
+    print
+    print
+    locs = database.sort_votes(locs)
+    print 'after: ' + str(locs)
+    return render_template("front.html", session=session,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes)
 
 @app.route('/post/<postid>', methods=["GET","POST"])
 def post(postid=None):
@@ -97,7 +103,7 @@ def post(postid=None):
     print curr_loc
     curr_comments = database.get_comments(postid)
     if request.method == "GET":
-        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments)
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes)
     
     else:
         author = request.form['author']
