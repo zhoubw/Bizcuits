@@ -7,20 +7,20 @@
     <div class="col-md-1 text-center">
     <br>
         <a href="#"><span class="glyphicon glyphicon-chevron-up upvote"></span></a>
-        <p class="votes">9000{{ location.votes }}</p>
+        <p class="votes">{{ get_votes( location.votes ) }}</p>
         <a href="#"><span class="glyphicon glyphicon-chevron-down downvote"></span></a>
     </div>
     <div class="col-md-11">
         <h1 class="idea-title">{{ location.name }}</h1>
         <p class="idea-address"><b>Address: </b>{{ location.address }}</p>
-        <p class="idea-description"><b>Description: </b>{{ location.description }}</p> 
+        <p class="idea-description"><b>Description: </b>{{ location.desc }}</p> 
         <p class="idea-meta">Posted by {{ location.author }} on {{ get_timestamp( location['_id'] ) }}</p>
         <hr>
 	    <script type="text/javascript" src="{{url_for('static', filename='js/maptest.js')}}"></script>
         <script language="javascript" type="text/javascript">
             function initialize() {
                 //var address = '10282';
-                var address = "{{zipcode}}"
+                var address = "{{location.zipcode}}"
                 geocoder = new google.maps.Geocoder();
                 geocoder.geocode({'address':address}, function(results,status) {
 	            if (status == google.maps.GeocoderStatus.OK) {
