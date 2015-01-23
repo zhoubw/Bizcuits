@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-
 <div class="container">
-  {% block content %}
+
+{% block content %}
 <div class="row">
     <div class="col-md-1 text-center">
     <br>
@@ -16,9 +16,24 @@
         <p class="idea-description"><b>Description: </b>{{ location.description }}</p> 
         <p class="idea-meta">Posted by {{ location.author }} on {{ get_timestamp( location['_id'] ) }}</p>
         <hr>
-	    <script type="text/javascript">
-        <!--{{url_for('static', filename='js/maptest.js')}}-->
-	    </script>
+	    <script type="text/javascript" src="{{url_for('static', filename='js/maptest.js')}}"></script>
+        <script language="javascript" type="text/javascript">
+            function initialize() {
+                //var address = '10282';
+                var address = "{{zipcode}}"
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode({'address':address}, function(results,status) {
+	            if (status == google.maps.GeocoderStatus.OK) {
+	                var lat = results[0].geometry.location.lat();
+	                var lng = results[0].geometry.location.lng();
+	                generateMapProp(lat,lng);
+	            } else {
+	                alert("Geocode was not successful for the following reason: " + status);
+	            }
+                });
+            }
+            window.onload = loadScript;
+        </script>
 	    <!-- need locations -->
 	    <div id="googleMap" style="width:800px;height:600px;"></div>
     </div>
@@ -37,7 +52,8 @@
 <div class="row">
     <div class="col-md-10">
         <p>{{ comment.content }}</p>
-        <p>Posted by <b>{{ comment.author }}</b> on {{ get_timestamp( comment['_id'] ) }}</p>
+        <p class="comment-info">Posted by <b>{{ comment.author }}</b> on {{ get_timestamp( comment['_id'] ) }}</p>
+        <hr>
     </div>
 </div>
 {% endfor %}

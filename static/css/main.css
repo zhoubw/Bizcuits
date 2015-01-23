@@ -32,3 +32,7 @@ body > .container{
 .downvote {
     color: gray;
 }
+
+.comment-info {
+    color: gray;
+}
