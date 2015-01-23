@@ -15,6 +15,8 @@ comments = db['comments']
 
 def search(query):
     response = locations.find({"address": query})
+    if(response == None):
+        return None
     return list(response) #array instead of cursor
 
 def add(location=None, name=None, address=None, author=None, zipcode=None, desc=None):
@@ -46,8 +48,12 @@ def get_locations():
 
 def sort_votes(post): #sorts either comments or posts by votes
     try:
-        return post.sorted(key= lambda v: get_votes(v['votes']), reverse=True)
+        print 'VOTES:????'
+        print get_votes(post[0]['votes'])
+        print "ARE YOU SERIOUS?"
+        return sorted(post, key= lambda v: get_votes(v['votes']), reverse=True) #throws an error
     except:
+        print "failure"
         return post
 
 def get_votes(votes):
