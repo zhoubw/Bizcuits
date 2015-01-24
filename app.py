@@ -86,12 +86,9 @@ def front():
 def index():
     #return render_template("index.html")
     locs = database.get_locations()
-    print 'before: ' + str(locs)
-    print
-    print
-    print
+    #print 'before: ' + str(locs)
     locs = database.sort_votes(locs)
-    print 'after: ' + str(locs)
+    #print 'after: ' + str(locs)
     return render_template("front.html", session=session,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes)
 
 @app.route('/about')
