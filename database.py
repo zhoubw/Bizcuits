@@ -15,6 +15,8 @@ comments = db['comments']
 
 def search(query):
     response = locations.find({"address": query})
+    if(response == None):
+        return None
     return list(response) #array instead of cursor
 
 def add(location=None, name=None, address=None, author=None, zipcode=None, desc=None):
@@ -23,8 +25,7 @@ def add(location=None, name=None, address=None, author=None, zipcode=None, desc=
     votes = {"up": 1, "down": 0} #vote dict
     location = {"address": address, "zipcode": zipcode, "name": name,
                 "author": author, "desc": desc, "votes": votes
-    }
-    
+    }    
 
     if locations.find_one({"address": address, "zipcode": zipcode}) != None:
         location_id = locations.insert(location)
@@ -33,8 +34,6 @@ def add(location=None, name=None, address=None, author=None, zipcode=None, desc=
     else:
         #return "Location already in database."
         return False
-
-
 
 def get_location(postid):
     loc = locations.find_one({ "_id": ObjectId(postid) })
@@ -46,8 +45,12 @@ def get_locations():
 
 def sort_votes(post): #sorts either comments or posts by votes
     try:
-        return post.sorted(key= lambda v: get_votes(v['votes']), reverse=True)
+        #print 'VOTES: '
+        print get_votes(post[0]['votes'])
+        #print "Sorted votes."
+        return sorted(post, key= lambda v: get_votes(v['votes']), reverse=True) #throws an error
     except:
+        print "Failure."
         return post
 
 def get_votes(votes):
