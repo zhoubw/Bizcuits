@@ -38,6 +38,7 @@ def check_username(username):
 def register_user(username, password):
     user = {"username":username, "password":password}
     user_id = users.insert(user)
+    print "Succesfully registered."
     return user_id
 
 # checks if the username and password logs in
@@ -101,10 +102,9 @@ def post(postid=None):
     print curr_loc
     curr_comments = database.get_comments(postid)
     if request.method == "GET":
-        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes)
- 
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes) 
     else:
-        author = request.form['author']
+        author = session['username'] 
         content = request.form['content']
         postid = postid
         database.add_comment(None, content, postid, author)

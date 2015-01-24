@@ -14,8 +14,9 @@
     </div>
     <div class="col-md-11">
         <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
-        <p class="idea-address">{{ location.address }}</p>
-        <p class="idea-meta">Added by {{ location.author }} on {{ get_timestamp(location['_id']) }}</p>
+        <p class="idea-address"><b>Address:</b> {{ location.address }}</p>
+        <p class="idea-description"><b>Description:</b> {{ location.desc }}</p>
+        <p class="idea-meta">Added by <b>{{ location.author }}</b> on {{ get_timestamp(location['_id']) }}</p>
     </div>
 </div>
 {% endfor %}

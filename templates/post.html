@@ -14,7 +14,7 @@
         <h1 class="idea-title">{{ location.name }}</h1>
         <p class="idea-address"><b>Address: </b>{{ location.address }}</p>
         <p class="idea-description"><b>Description: </b>{{ location.desc }}</p> 
-        <p class="idea-meta">Posted by {{ location.author }} on {{ get_timestamp( location['_id'] ) }}</p>
+        <p class="idea-meta">Posted by <b>{{ location.author }}</b> on {{ get_timestamp( location['_id'] ) }}</p>
         <hr>
 	    <script type="text/javascript" src="{{url_for('static', filename='js/maptest.js')}}"></script>
         <script language="javascript" type="text/javascript">
@@ -40,14 +40,18 @@
 </div>
 <hr>
 <p><b>Comments</b></p>
-
+{% if 'username' in session %}
 <form method="POST" action="{{url_for('post', postid=location['_id'])}}">
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="Name" name="author"></input>
-    <textarea class="form-control" rows="4" name="content"></textarea>
-    <button type="submit" class="btn btn-default"> Say something </button>
-  </div>
+    <div class="form-group">
+        <p>You are commenting as: <b>{{ session['username'] }}</b></p>
+        <textarea class="form-control" rows="4" name="content"></textarea>
+        <button type="submit" class="btn btn-default"> Say something </button>
+    </div>
 </form>
+{% else %}
+<p><a href="/login">Login to comment</a></p>
+{% endif %}
+
 {% for comment in comments %}
 <div class="row">
     <div class="col-md-10">
