@@ -130,9 +130,14 @@ def post(postid=None):
     print curr_loc
     curr_comments = database.get_comments(postid)
     if request.method == "GET":
+        if 'username' in session:
+            rates = users.find_one({'username':session['username']})['rates']
+            rates_str = [str(x) for x in rates]
+            return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session,rates=rates_str) 
         return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session) 
     else:
         rated()
+        postid = postid
         if "content" in request.form:
             content = request.form['content']
             if "username" in session:
@@ -142,11 +147,11 @@ def post(postid=None):
                 users.update(
                 user,
                     {'$push':{'comments':postid}}
-            )
-        postid = postid
+                )
+                #return redirect(url_for("post",postid=postid,session=session))
 
         #return redirect(url_for("post",postid=postid))
-    return redirect(url_for("post",postid=postid,session=session))
+        return redirect(url_for("post",postid=postid,session=session))
 
 @app.route('/search', methods = ['POST'])
 def search():
