@@ -88,4 +88,5 @@ def get_comments(postid):
     if post == None:
         return False
     post_comments = comments.find({'postid': postid})
-    return list(post_comments) #array instead of cursor
+    post_comments = reversed(list(post_comments))
+    return post_comments #array instead of cursor
