@@ -66,26 +66,27 @@ def nologin(f):
         return f(*args, **kwargs)
     return inner
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 #@app.route('/index')
 #@app.route('/home')
 def index():
     if request.method == "POST":
         if "upvote" in request.form:
-            #print request.form['upvote']
-            #print "****************************************"
             loc = database.get_location(request.form['upvote'])
-            #for some reason I need to use both values
-            up = loc['votes']['up']
-            print up
             locations.update(
                 #{ '_id':ObjectId(request.form['upvote'])},
                 loc,
                 {'$inc':{'votes.up':1}},
                 upsert=False,
                 multi=False)
-            print "up:"
-            print loc['votes']['up']
+        elif "downvote" in request.form:
+            loc = database.get_location(request.form['downvote'])
+            locations.update(
+                #{ '_id':ObjectId(request.form['upvote'])},
+                loc,
+                {'$inc':{'votes.down':1}},
+                upsert=False,
+                multi=False)
     #return render_template("index.html")
     locs = database.get_locations()
     #print 'before: ' + str(locs)
