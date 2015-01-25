@@ -66,15 +66,12 @@ def nologin(f):
         return f(*args, **kwargs)
     return inner
 
-@app.route('/', methods=['GET','POST'])
-#@app.route('/index')
-#@app.route('/home')
-def index():
+def rated():
     if request.method == "POST":
         if "upvote" in request.form:
             loc = database.get_location(request.form['upvote'])
             locations.update(
-                #{ '_id':ObjectId(request.form['upvote'])},
+            #{ '_id':ObjectId(request.form['upvote'])},
                 loc,
                 {'$inc':{'votes.up':1}},
                 upsert=False,
@@ -87,6 +84,12 @@ def index():
                 {'$inc':{'votes.down':1}},
                 upsert=False,
                 multi=False)
+
+@app.route('/', methods=['GET','POST'])
+#@app.route('/index')
+#@app.route('/home')
+def index():
+    rated()
     #return render_template("index.html")
     locs = database.get_locations()
     #print 'before: ' + str(locs)
@@ -104,13 +107,18 @@ def post(postid=None):
     print curr_loc
     curr_comments = database.get_comments(postid)
     if request.method == "GET":
-        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes) 
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid) 
     else:
-        author = session['username'] 
-        content = request.form['content']
+        rated()
+        if "content" in request.form:
+            content = request.form['content']
+            if "username" in session:
+                author = session['username'] 
+                database.add_comment(None, content, postid, author)
         postid = postid
-        database.add_comment(None, content, postid, author)
-        return redirect(url_for("post",postid=postid))
+
+        #return redirect(url_for("post",postid=postid))
+    return redirect(url_for("post",postid=postid))
 
 @app.route('/search', methods = ['POST'])
 def search():
