@@ -21,19 +21,16 @@ def search(query):
 
 def add_location(location=None, name=None, address=None, author=None, zipcode=None, desc=None):
     if (name==None) or (address==None) or (author==None) or (zipcode==None) or (desc==None):
+        print "Missing fields, failed."
         return False
     votes = {"up": 1, "down": 0} #vote dict
     location = {"address": address, "zipcode": zipcode, "name": name,
                 "author": author, "desc": desc, "votes": votes
     }    
-    print locations.find_one({"address": address, "zipcode": zipcode})  
-    if locations.find_one({"address": address, "zipcode": zipcode}) == None:
-        location_id = locations.insert(location)
-        print "Successfully added " + location['name'] + "!"
-        return location_id
-    else:
-        print "Location already in database."
-        return False
+    #if locations.find_one({"address": address, "zipcode": zipcode}) == None:
+    location_id = locations.insert(location)
+    print "Successfully added " + location['name'] + "!"
+    return location_id
 
 def get_location(postid):
     loc = locations.find_one({ "_id": ObjectId(postid) })
