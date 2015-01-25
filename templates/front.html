@@ -3,14 +3,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
-            <h3>Most Popular Bizcuits</h3>
-        </div>
-        {% if 'username' in session %}
-        <div class="col-md-12">
-            <a class="btn btn-default" href="/submit">Submit an idea!</a> 
-        </div>
-        {% endif %}
+        <h3>Most Popular Bizcuits</h3> 
     </div>
     <hr>
     {% for location in locations %}
