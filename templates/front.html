@@ -8,12 +8,21 @@
     <hr>
     {% for location in locations %}
     <div class="row">
-        <div class="col-md-1 text-center">
-            <br>
-            <a href="#"><span class="glyphicon glyphicon-chevron-up upvote"></span></a>
-            <p class="votes">{{ get_votes( location.votes ) }}</p>
-            <a href="#"><span class="glyphicon glyphicon-chevron-down downvote"></span></a>
-        </div>
+      <div class="col-md-1 text-center">
+        <br>
+        <form method="POST" action={{url_for('index')}}>
+	  <button type="submit" class="glyphicon glyphicon-chevron-up upvote" name="upvote" value={{location['_id']}}></button>
+	  <p class="votes">{{ get_votes( location.votes ) }}</p>
+	  <button type="submit" class="glyphicon glyphicon-chevron-down downvote" name="downvote" value={{location['_id']}}></button>
+	  <style>
+	    button {
+	    background:none!important;
+	    border:none; 
+	    padding:0!important;
+	    }
+	  </style>
+	</form>
+      </div>
         <div class="col-md-11">
             <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
             <p class="idea-address"><b>Address:</b> {{ location.address }}</p>
