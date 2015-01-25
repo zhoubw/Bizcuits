@@ -26,10 +26,16 @@ body > .container{
 }
 
 .upvote {
+    background:none!important;
+    border:none; 
+    padding:0!important; 
     color: gray; //maybe find a way to make this colored if clicked
 }
 
 .downvote {
+    background:none!important;
+	border:none; 
+	padding:0!important;
     color: gray;
 }
 
