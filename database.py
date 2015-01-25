@@ -5,7 +5,7 @@ client = MongoClient('mongodb://Citronnade:Citronnade@ds031271.mongolab.com:3127
 db = client['softdev2015']
 locations = db['locations']
 comments = db['comments']
-
+users = db['users'] #collection
 # db = client.test_database
 # Possible documents:
 # - Idea posts
@@ -19,6 +19,12 @@ def search(query):
         return None
     return list(response) #array instead of cursor
 
+def get_user(username):
+    user = users.find_one({"username":username})
+    return user
+def get_users():
+    usrs = users.find()
+    return list(usrs)
 def add_location(location=None, name=None, address=None, author=None, zipcode=None, desc=None):
     if (name==None) or (address==None) or (author==None) or (zipcode==None) or (desc==None):
         print "Missing fields, failed."

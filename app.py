@@ -14,6 +14,7 @@ app = Flask(__name__)
 client = MongoClient('mongodb://Citronnade:Citronnade@ds031271.mongolab.com:31271/softdev2015')
 db = client['softdev2015'] #database in softdev2015
 locations = db['locations'] #collection
+comments = db['comments'] #collection
 users = db['users'] #collection
 
 app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
@@ -68,22 +69,38 @@ def nologin(f):
 
 def rated():
     if request.method == "POST":
+        user = database.get_user(session['username'])
         if "upvote" in request.form:
-            loc = database.get_location(request.form['upvote'])
+            _id = request.form['upvote']
+            if 'rates' in user:
+                if _id in user['rates']:
+                    return #yeah this can be better
+            loc = database.get_location(_id)
             locations.update(
             #{ '_id':ObjectId(request.form['upvote'])},
                 loc,
                 {'$inc':{'votes.up':1}},
                 upsert=False,
                 multi=False)
+            users.update(
+                user,
+                {'$push':{'rates':_id}}
+            )
         elif "downvote" in request.form:
-            loc = database.get_location(request.form['downvote'])
+            _id = request.form['downvote']
+            if 'rates' in user:
+                if _id in user['rates']:
+                    return
+            loc = database.get_location(_id)
             locations.update(
                 #{ '_id':ObjectId(request.form['upvote'])},
                 loc,
                 {'$inc':{'votes.down':1}},
                 upsert=False,
                 multi=False)
+            users.update(
+                user,
+                {'$push':{'rates':_id}})
 
 @app.route('/', methods=['GET','POST'])
 #@app.route('/index')
@@ -95,7 +112,13 @@ def index():
     #print 'before: ' + str(locs)
     locs = database.sort_votes(locs)
     #print 'after: ' + str(locs)
-    return render_template("front.html", session=session,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes)
+    #usrs = database.get_users()
+    #print not locations.find_one({'_id':ObjectId('54b01a4b839b007864cfa565')}) in users.find_one({'username':session['username']})['rates']
+    if 'username' in session:
+        rates = users.find_one({'username':session['username']})['rates']
+        rates_str = [str(x) for x in rates]
+        return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes,rates=rates_str)
+    return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes)
 
 @app.route('/about')
 def about():
@@ -114,7 +137,12 @@ def post(postid=None):
             content = request.form['content']
             if "username" in session:
                 author = session['username'] 
+                user = database.get_user(author)
                 database.add_comment(None, content, postid, author)
+                users.update(
+                user,
+                    {'$push':{'comments':postid}}
+            )
         postid = postid
 
         #return redirect(url_for("post",postid=postid))
