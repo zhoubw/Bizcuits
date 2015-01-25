@@ -19,6 +19,26 @@ def search(query):
         return None
     return list(response) #array instead of cursor
 
+#checks if the username is available
+#returns true if available
+def check_username(username):
+    if users.find_one({'username':username}) != None:
+        return False # username already exists
+    return True # available, does not exist yet
+
+# registers a user. Returns the user_id
+def register_user(username, password):
+    user = {"username":username, "password":password, "rates": [], "comments": []}
+    user_id = users.insert(user)
+    print "Succesfully registered."
+    return user_id
+
+# checks if the username and password logs in
+def check_login(username, password):
+    if users.find_one({"username":username,"password":password}) == None:
+        return False
+    return True
+
 def get_user(username):
     user = users.find_one({"username":username})
     return user

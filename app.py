@@ -28,25 +28,7 @@ def get_timestamp(loc_id):
     date = date.strftime("%b %d, %Y at %I:%M %p")
     return date
 
-#checks if the username is available
-#returns true if available
-def check_username(username):
-    if users.find_one({'username':username}) != None:
-        return False # username already exists
-    return True # available, does not exist yet
 
-# registers a user. Returns the user_id
-def register_user(username, password):
-    user = {"username":username, "password":password}
-    user_id = users.insert(user)
-    print "Succesfully registered."
-    return user_id
-
-# checks if the username and password logs in
-def check_login(username, password):
-    if users.find_one({"username":username,"password":password}) == None:
-        return False
-    return True
 
 #for pages that require login
 def login_required(f):
@@ -190,7 +172,7 @@ def login():
         password = request.form['loginPassword']
         #pass_hash = generate_password_hash(password) #wtf do I do with this
         #use check_password_hash(hash, password) to authenticate
-        if check_login(username,password):
+        if database.check_login(username,password):
             session['username'] = username
             return redirect(url_for('index'))
         else: #invalid
@@ -212,12 +194,12 @@ def register():
         username = request.form['registerUsername']
         password = request.form['registerPassword']
         confirmPassword = request.form['confirmPassword']
-        if check_username(username):
+        if database.check_username(username):
             if not password == confirmPassword: #passwords do not match
                 print "passwords do not match"
                 pass #need some kind of message
             else:
-                register_user(username,password)
+                database.register_user(username,password)
         else:
             #username is taken
             flash(username + " is taken!")
