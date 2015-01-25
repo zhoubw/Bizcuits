@@ -107,7 +107,7 @@ def post(postid=None):
     print curr_loc
     curr_comments = database.get_comments(postid)
     if request.method == "GET":
-        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid) 
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session) 
     else:
         rated()
         if "content" in request.form:
@@ -118,7 +118,7 @@ def post(postid=None):
         postid = postid
 
         #return redirect(url_for("post",postid=postid))
-    return redirect(url_for("post",postid=postid))
+    return redirect(url_for("post",postid=postid,session=session))
 
 @app.route('/search', methods = ['POST'])
 def search():

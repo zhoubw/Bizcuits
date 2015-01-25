@@ -8,6 +8,7 @@
     <hr>
     {% for location in locations %}
     <div class="row">
+      {% if 'username' in session %}
       <div class="col-md-1 text-center">
         <br>
         <form method="POST" action={{url_for('index')}}>
@@ -16,6 +17,7 @@
 	  <button type="submit" class="glyphicon glyphicon-chevron-down downvote" name="downvote" value={{location['_id']}}></button>
 	</form>
       </div>
+      {% endif %}
         <div class="col-md-11">
             <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
             <p class="idea-address"><b>Address:</b> {{ location.address }}</p>
