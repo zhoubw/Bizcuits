@@ -19,20 +19,20 @@ def search(query):
         return None
     return list(response) #array instead of cursor
 
-def add(location=None, name=None, address=None, author=None, zipcode=None, desc=None):
+def add_location(location=None, name=None, address=None, author=None, zipcode=None, desc=None):
     if (name==None) or (address==None) or (author==None) or (zipcode==None) or (desc==None):
         return False
     votes = {"up": 1, "down": 0} #vote dict
     location = {"address": address, "zipcode": zipcode, "name": name,
                 "author": author, "desc": desc, "votes": votes
     }    
-
-    if locations.find_one({"address": address, "zipcode": zipcode}) != None:
+    print locations.find_one({"address": address, "zipcode": zipcode})  
+    if locations.find_one({"address": address, "zipcode": zipcode}) == None:
         location_id = locations.insert(location)
-        #return "Successfully added " + location['name'] + "!"
-        return True
+        print "Successfully added " + location['name'] + "!"
+        return location_id
     else:
-        #return "Location already in database."
+        print "Location already in database."
         return False
 
 def get_location(postid):

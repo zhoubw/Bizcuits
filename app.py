@@ -66,21 +66,6 @@ def nologin(f):
         return f(*args, **kwargs)
     return inner
 
-    
-'''
-@app.route("/front", methods = ['POST'])
-@app.route("/", methods = ['POST'])
-def front():
-    if request.method == "POST":
-        query = request.form['query']
-        if query == "":
-            #error
-            return render_template("deadfront.html") #testing
-        return render_template("search_results.html", query=query)
-    return render_template("deadfront.html") #testing
-'''
-#this will probably be gone
-
 @app.route('/')
 #@app.route('/index')
 #@app.route('/home')
@@ -122,20 +107,21 @@ def search():
             error = "Location not found."
             return render_template("results.html", error=error)
     
-@app.route('/add', methods= ["GET", "POST"])
-def add():
+@app.route('/submit', methods= ["GET", "POST"])
+def submit():
     error = ""
     if request.method == "POST":
-        name = request.form['name']
-        address = request.form['address']
-        location = {'name': name, 'address': address}
-        if locations.find_one({"name": location}) != None:
-            location_id = locations.insert(location)
-            return "Successfully added " + location['name'] + "!"
-        else:
-            return "Location already in database."
+        name = request.form['locationName']
+        address = request.form['streetAddress']
+        zipcode = request.form['zipcode']
+        desc = request.form['desc']
+        postid = database.add_location(None, name, address, session['username'], zipcode, desc)  
+        if postid:
+            return redirect(url_for('post', postid=postid))
+        print "The location already exists."
+        return redirect(url_for("submit"))
     elif request.method == "GET":
-        return render_template("add.html")
+        return render_template("submit.html")
 
 @app.route('/login', methods = ["GET", "POST"])
 @nologin
