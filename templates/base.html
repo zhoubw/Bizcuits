@@ -28,12 +28,12 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <form class="navbar-form navbar-left" role="search">
+                    <form class="navbar-form navbar-left" role="search" method="POST" action={{url_for('search')}}>
                         <div class="form-group">
                             <!--<span class="label label-default">Find</span> -->
                             Find&nbsp;&nbsp;
-                            <input type="text" class="form-control" placeholder="Bizcuits">
-                            <input type="text" class="form-control" placeholder="At..."> 
+                            <input type="text" class="form-control" name=keyword placeholder="Bizcuits">
+                            <input type="text" class="form-control" name=zipcode placeholder="At zipcode..."> 
                         </div>
                         <button type="submit" class="btn btn-default">Search!</button>                        
                     </form>

@@ -139,8 +139,13 @@ def post(postid=None):
 def search():
     error = ""
     if request.method == "POST":
-        location = request.form['query']
-        response = database.search(location)
+        #location = request.form['query']
+        #response = database.search(location)
+        zipcode = request.form['zipcode']
+        keywords = request.form['keyword']
+        if keywords != None:
+            keywords = keywords.split()
+        response = database.search(keywords, zipcode)
         if response != None:
             return render_template("results.html", location=response)
         else:

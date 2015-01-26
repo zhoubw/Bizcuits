@@ -13,11 +13,28 @@ users = db['users'] #collection
 
 #app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 
-def search(query):
-    response = locations.find({"address": query})
-    if(response == None):
+#def search(query):
+#    response = locations.find({"address": query})
+#    if(response == None):
+#        return None
+#    return list(response) #array instead of cursor
+
+def search(keywords, zipcode): #keywords is array or single word?
+    response_zip = locations.find({"zipcode": zipcode})
+    ifresponse_zip == None:
         return None
-    return list(response) #array instead of cursor
+    response_zip = list(response_zip) #create array
+    if keywords == None: #find everything in a given zipcode.
+        return response_zip
+    culled_response = set() #want to keep uniqueness...not very efficient search algorithm.
+    for keyword in keywords:
+        for loc in response_zip:
+            if keyword in loc['desc']:
+                culled_response.add(loc)
+    return culled_response
+                
+            
+    
 
 #checks if the username is available
 #returns true if available
