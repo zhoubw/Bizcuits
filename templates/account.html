@@ -4,5 +4,21 @@
 {% if 'username' in session %}
 <h3> hello {{session['username']}}! </h3>
 <h4>Would you like to change your password?</h4>
+<form method="POST">
+  <div class="form-group">
+    <label for="newPass"> New Password </label>
+    <input type="password" class="form-control" id="newPass" name="newPass" placeholder="New Password">
+  </div>
+  <div class="form-group">
+    <label for="confirmNewPass"> Confirm New Password </label>
+    <input type="password" class="form-control" id="confirmNewPass" name="confirmNewPass" placeholder="Retype New Password Here">
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="oldPass"> Verify your identity by typing your old password here:</label>
+    <input type="password" class="form-control" id="oldPass" name="oldPass" placeholder="Old Password">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
 {% endif %}
 {% endblock %}
