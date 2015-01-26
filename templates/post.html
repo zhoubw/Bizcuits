@@ -20,6 +20,13 @@
       <p class="votes">{{ get_votes( location.votes ) }}</p>
     </div>      
     {% endif %}
+    {% else %}
+    <div class="col-md-1 text-center">
+      <br>
+      <a href="/register"><span class="glyphicon glyphicon-chevron-up upvote"></span></a>
+      <p class="votes">{{ get_votes( location.votes ) }}</p>
+      <a href="/register"><span class="glyphicon glyphicon-chevron-down downvote"></span></a>
+    </div>
     {% endif %}
   <div class="col-md-11">
     <h1 class="idea-title">{{ location.name }}</h1>
