@@ -40,10 +40,11 @@
                             <input type="text" class="form-control" name=keyword placeholder="Bizcuits">
                             <input type="text" class="form-control" name=zipcode placeholder="At zipcode..."> 
                         </div>
-                        <button type="submit" class="btn btn-default">Search!</button>                        
+                        <button type="submit" class="btn btn-default btn-custom">Search!</button>
+			   
                     </form>
                     {% if 'username' in session %}
-                    <a class="btn btn-default navbar-btn navbar-left" href="/submit">Submit an idea!</a> 
+                    <a class="btn btn-default btn-custom navbar-btn navbar-left" href="/submit">Submit an idea!</a> 
                     {% endif %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
