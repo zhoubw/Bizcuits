@@ -139,7 +139,7 @@ def post(postid=None):
         #return redirect(url_for("post",postid=postid))
         return redirect(url_for("post",postid=postid,session=session))
 
-@app.route('/search', methods = ['POST'])
+@app.route('/search', methods = ['GET','POST'])
 def search():
     error = ""
     if request.method == "POST":
@@ -155,7 +155,12 @@ def search():
         print '~~~~~~~~~~~~~~~~~~~~~'
         print response
         if response != None:
-            return render_template("results.html", location=response)
+            sortedlocs = database.sort_votes(response)
+            if 'username' in session:
+                rates = users.find_one({'username':session['username']})['rates']
+                rates_str = [str(x) for x in rates]
+                return render_template("results.html", locations=sortedlocs, session=session, users=users, get_timestamp=get_timestamp, get_votes=database.get_votes, rates=rates_str)
+            return render_templates("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes)
         else:
             error = "Location not found."
             return render_template("results.html", error=error)
