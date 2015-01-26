@@ -141,6 +141,7 @@ def post(postid=None):
 
 @app.route('/search', methods = ['GET','POST'])
 def search():
+    rated()
     error = ""
     if request.method == "POST":
         #location = request.form['query']
@@ -247,6 +248,10 @@ def control():
     usersf = users.find()
     #return render_template("control.html",session=session,locations=locations,users=users)
     return render_template("control.html",session=session,locations=locationsf,users=usersf)
+
+@app.errorhandler(400)
+def error400(e):
+    return render_template('400.html'), 400
 
 if __name__ == "__main__":
     app.debug = True
