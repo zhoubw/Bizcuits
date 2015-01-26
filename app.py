@@ -30,7 +30,6 @@ def get_timestamp(loc_id):
     return date
 
 
-
 #for pages that require login
 def login_required(f):
     @wraps(f)
@@ -103,6 +102,10 @@ def index():
         return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes,rates=rates_str)
     return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes)
 
+@app.route('/account')
+def account():
+    return render_template("account.html")
+
 @app.route('/about')
 def about():
     return render_template("about.html")
@@ -144,6 +147,8 @@ def search():
         #response = database.search(location)
         zipcode = request.form['zipcode']
         keywords = request.form['keyword']
+        if (keywords == "") or (zipcode == ""):
+            return render_template("400.html")
         if keywords != None:
             keywords = keywords.split()
         response = database.search(keywords, zipcode)

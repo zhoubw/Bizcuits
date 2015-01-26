@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if 'username' in session %}
+<h3> hello {{session['username']}}! </h3>
+<h4>Would you like to change your password?</h4>
+{% endif %}
+{% endblock %}
