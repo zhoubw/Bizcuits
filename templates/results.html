@@ -2,12 +2,12 @@
   <head><title> hi </title></head>
   <body>
     <h1> hi </h1>
-    {% if location %}
+    {% for location in location %}
     {{location.name}}
     <br>
     {{location.address}}
     <br>
-    {% endif %}
+    {% endfor %}
     {{error}}
   </body>
 </html>

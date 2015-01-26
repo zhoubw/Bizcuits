@@ -146,6 +146,8 @@ def search():
         if keywords != None:
             keywords = keywords.split()
         response = database.search(keywords, zipcode)
+        print '~~~~~~~~~~~~~~~~~~~~~'
+        print response
         if response != None:
             return render_template("results.html", location=response)
         else:

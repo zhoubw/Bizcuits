@@ -14,23 +14,34 @@ users = db['users'] #collection
 #app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 
 #def search(query):
-#    response = locations.find({"address": query})
+#    response = locations.find({"addriess": query})
 #    if(response == None):
 #        return None
 #    return list(response) #array instead of cursor
 
 def search(keywords, zipcode): #keywords is array or single word?
     response_zip = locations.find({"zipcode": zipcode})
-    ifresponse_zip == None:
+    if response_zip == None:
         return None
     response_zip = list(response_zip) #create array
-    if keywords == None: #find everything in a given zipcode.
+    print '~~~~~~~~~~~~~~~~~~~~~~~'
+    print keywords
+    print '~~~~~~~~~~~~~~~~~~~~~'
+    print response_zip
+    if not keywords: #find everything in a given zipcode.
         return response_zip
-    culled_response = set() #want to keep uniqueness...not very efficient search algorithm.
+    culled_response = [] #sets aren't really working
+    added_responses = [] #so we now have a set for added locations.
+    enum_locs = list(enumerate(response_zip))
+    #this gives something like [(0, loc1), (1, loc2)]
     for keyword in keywords:
-        for loc in response_zip:
-            if keyword in loc['desc']:
-                culled_response.add(loc)
+        keyword = keyword.lower()
+        for loc in enum_locs:
+            if keyword in loc[1]['desc'].lower() or keyword in loc[1]['name'].lower():
+                if loc[0] not in added_responses:
+                    culled_response.append(loc[1])
+                    added_responses.append(loc[0])
+                
     return culled_response
                 
             
