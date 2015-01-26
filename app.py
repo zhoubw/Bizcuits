@@ -29,7 +29,6 @@ def get_timestamp(loc_id):
     date = date.strftime("%b %d, %Y at %I:%M %p")
     return date
 
-
 #for pages that require login
 def login_required(f):
     @wraps(f)
