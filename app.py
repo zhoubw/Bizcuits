@@ -11,6 +11,7 @@ import database
 
 app = Flask(__name__)
 
+#mongo stuff
 client = MongoClient('mongodb://Citronnade:Citronnade@ds031271.mongolab.com:31271/softdev2015')
 db = client['softdev2015'] #database in softdev2015
 locations = db['locations'] #collection
