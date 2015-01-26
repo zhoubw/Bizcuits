@@ -147,7 +147,7 @@ def search():
         #response = database.search(location)
         zipcode = request.form['zipcode']
         keywords = request.form['keyword']
-        if (keywords == "") or (zipcode == ""):
+        if zipcode == "":
             return render_template("400.html")
         if keywords != None:
             keywords = keywords.split()
