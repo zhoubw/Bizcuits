@@ -102,9 +102,24 @@ def index():
         return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes,rates=rates_str)
     return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes)
 
-@app.route('/account')
+@app.route('/account', methods=["GET", "POST"])
+@login_required
 def account():
-    return render_template("account.html")
+    error=""
+    if request.method == "POST":
+        newPass = request.form['newPass']
+        confirmNewPass = request.form['confirmNewPass']
+        oldPass = request.form['oldPass']
+        if newPass == "" or confirmNewPass == "" or oldPass == "":
+            error = "Did you remember to fill out the entire form? (no)"
+        elif newPass!= confirmNewPass:
+            error = "Your passwords don't match. Please try again!"
+        elif database.get_password(session['username']) != oldPass:
+            error = "You typed in the wrong password..."
+        else:
+            error = "Okay! Your password has now been successfully changed."
+            database.set_password(session['username'], newPass)
+    return render_template("account.html", error=error)
 
 @app.route('/about')
 def about():

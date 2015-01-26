@@ -14,7 +14,7 @@ users = db['users'] #collection
 #app.secret_key = "c~9%1.p4IUDj2I*QYHivZ73/407E]7<f1o_5b1(QzNdr00m7Tit)[T>C;2]5"
 
 #def search(query):
-#    response = locations.find({"addriess": query})
+#    response = locations.find({"address": query})
 #    if(response == None):
 #        return None
 #    return list(response) #array instead of cursor
@@ -70,6 +70,16 @@ def check_login(username, password):
 def get_user(username):
     user = users.find_one({"username":username})
     return user
+
+def get_password(username):
+    user = get_user(username)
+    return user["password"]
+
+def set_password(username, pwd):
+    user = get_user(username)
+    user["password"] = pwd
+    print user
+
 def get_users():
     usrs = users.find()
     return list(usrs)

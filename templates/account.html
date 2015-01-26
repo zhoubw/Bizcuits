@@ -4,6 +4,7 @@
 {% if 'username' in session %}
 <h3> hello {{session['username']}}! </h3>
 <h4>Would you like to change your password?</h4>
+<h4><red>{{error}}</red></h4>
 <form method="POST">
   <div class="form-group">
     <label for="newPass"> New Password </label>
