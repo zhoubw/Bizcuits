@@ -6,7 +6,7 @@ import pytz
 from tzlocal import get_localzone
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
-
+import math
 import database
 
 app = Flask(__name__)
@@ -70,16 +70,18 @@ def index():
     rated()
     locs = database.get_locations()
     locs = database.sort_votes(locs)
+    paginator = range(1, int(math.ceil(len(locs)/10.0))+1)
     page=1
     if request.method=="GET":
         page = request.args.get('page')
     if page==None:
         page=1
+    page = int(page)
     locs = database.paginate(locs, page)
     if 'username' in session:
         user = database.get_user(session['username']);
-        return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes_pst,user=user, page=page)
-    return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes_pst, page=page)
+        return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes_pst,user=user, page=page, paginator=paginator)
+    return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes_pst, page=page,paginator=paginator)
 
 @app.route('/account', methods=["GET", "POST"])
 @login_required
