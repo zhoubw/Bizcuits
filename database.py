@@ -130,11 +130,19 @@ def sort_votes(post): #sorts either comments or posts by votes
         print "Failure."
         return post
 
-def get_votes(votes):
+def get_votes(votes): #deprecated?
     try:
         return votes["up"] - votes["down"]
     except:
         return 0
+
+def get_votes_pst(post):
+    '''very strange new post schema...but I guess there's this.'''
+    try:
+        return len(post['upvotes']) - len(post['downvotes'])
+    except:
+        return 0
+
 
 def add_comment(comment=None, content=None, postid=None, author=None): #for transitional purposes until we move dict generation out of app and into database
     if comment == None:
