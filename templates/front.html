@@ -40,8 +40,8 @@
     {% endif %}
     <div class="col-md-11">
       <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
-      <p class="idea-address"><b>Zipcode:</b> {{ location.zipcode }}</p>
-      <p class="idea-description"><b>Description:</b> {{ location.desc }}</p>
+      <p class="idea-address"><b>Suggested Street Address:</b> {{ location.address }}</p>
+      <p class="idea-zipcode"><b>Zipcode:</b> {{ location.zipcode }}</p>
       <p class="idea-meta">Added by <b>{{ location.author }}</b> on {{ get_timestamp(location['_id']) }}</p>
     </div>
   </div>
