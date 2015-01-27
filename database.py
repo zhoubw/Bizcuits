@@ -134,6 +134,34 @@ def get_locations():
     locs = locations.find()
     return list(locs)  #array instead of cursor
 
+def paginate(posts, page): #posts is an array of comments/posts
+#    '''displays 10 posts at a time.'''
+
+    try:
+        page = int(page)
+        print 'page: ' + str(page)
+        if len(posts) > page *10:
+            print 'entered if'
+            print 'len(posts): ' + str(len(posts))
+            print '(page-1)*10: ' + str((page-1)*10)
+            print 'page*10 ' + str(page*10)
+            print 'len of them: ' + str(len(posts[(page-1)*10:page*10]))
+            new_posts = posts[(page-1)*10:page*10]
+        else:
+            print 'entered else'
+            print 'len(posts): ' + str(len(posts))
+            print 'page: ' + str(page * 10)
+            print len(posts) > (page*10)
+            new_posts = posts[(page-1)*10:]
+            print 'new_posts: ' + str(new_posts)
+        return new_posts
+            
+    except:
+        print 'len(posts): ' + str(len(posts))
+        print 'page: ' + str(page)
+        #print posts[10:]
+        return posts[0:]
+
 def sort_votes(post): #sorts either comments or posts by votes
     try:
         #print 'VOTES: '
@@ -154,7 +182,6 @@ def get_votes(votes): #deprecated?
 def get_votes_pst(post):
     '''very strange new post schema...but I guess there's this.'''
     try:
-       # print len(post['upvotes']) - len(post['downvotes'])
         return len(post['upvotes']) - len(post['downvotes'])
     except:
         return 0

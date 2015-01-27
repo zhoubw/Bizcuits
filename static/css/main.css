@@ -46,3 +46,8 @@ body > .container{
 .idea-meta {
     color: gray;
 }
+
+.pagination > li > a{
+    color: #b95d40;
+    margin: 0 auto; 
+}
