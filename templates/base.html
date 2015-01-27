@@ -51,7 +51,7 @@
                     {% block navcompright %}
                     {% if 'username' in session %}
 		    <li><a href="/account">{{session['username']}}</a></li>
-		    <li><a href="/myposts">My Bizcuits</a></li>
+            <li><a href="{{url_for('myposts',username=session['username'])}}">My Bizcuits</a></li>
                     <li><a href="/logout">Logout</a></li>
                     {% else %}
                     <li><a href="/register">Sign Up</a></li>

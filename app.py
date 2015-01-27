@@ -111,10 +111,10 @@ def account():
 def about():
     return render_template("about.html")
 
-@app.route('/myposts')
+@app.route('/users/<username>')
 @login_required
-def myposts():
-    user = database.get_user(session['username'])
+def myposts(username=None):
+    user = database.get_user(username)
     ids = user['bizcuits'];
     print ids
     #locs = database.get_locations()
@@ -124,7 +124,7 @@ def myposts():
     #locs = [x for x in locs if x['author'] == user]
     #print locs
     #print user['username']
-    return render_template("myposts.html",locations=locs, session=session,get_timestamp=get_timestamp)
+    return render_template("myposts.html",locations=locs, session=session,get_timestamp=get_timestamp, username=username)
 
 @app.route('/post/<postid>', methods=["GET","POST"])
 def post(postid=None):
