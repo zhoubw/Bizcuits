@@ -166,6 +166,7 @@ def search():
     return render_template("results.html", error=error, isError=isError)
     
 @app.route('/submit', methods= ["GET", "POST"])
+@login_required
 def submit():
     error = ""
     isError = False
@@ -179,6 +180,9 @@ def submit():
             return render_template("submit.html", error=error, isError=True)
         postid = database.add_location(None, name, address, session['username'], zipcode, desc)
         if postid:
+            #submission should work here
+            user = database.get_user(session['username'])
+            users.update(user,{'$push':{'bizcuits':postid}})
             return redirect(url_for('post', postid=postid))
         print "The location already exists."
         return redirect(url_for("submit"))
