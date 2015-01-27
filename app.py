@@ -116,10 +116,14 @@ def about():
 def myposts():
     user = database.get_user(session['username'])
     ids = user['bizcuits'];
-    locs = database.get_locations()
-    #locs = [database.get_location(i) for i in ids]
-    locs = [x for x in locs if x['author'] == user]
-    
+    print ids
+    #locs = database.get_locations()
+    locs = [database.get_location(i) for i in ids]
+    locs = [x for x in locs if x != None]
+    print locs
+    #locs = [x for x in locs if x['author'] == user]
+    #print locs
+    #print user['username']
     return render_template("myposts.html",locations=locs, session=session,get_timestamp=get_timestamp)
 
 @app.route('/post/<postid>', methods=["GET","POST"])
