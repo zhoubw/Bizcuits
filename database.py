@@ -125,9 +125,10 @@ def get_locations():
 def sort_votes(post): #sorts either comments or posts by votes
     try:
         #print 'VOTES: '
-        print get_votes(post[0]['votes'])
+        #print get_votes(post[0]['votes'])
         #print "Sorted votes."
-        return sorted(post, key= lambda v: get_votes(v['votes']), reverse=True) #throws an error
+        #return sorted(post, key= lambda v: get_votes(v['votes']), reverse=True) #throws an error
+        return sorted(post,key=lambda v: get_votes_pst(v),reverse=True)
     except:
         print "Failure."
         return post
