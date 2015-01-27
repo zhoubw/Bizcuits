@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from werkzeug.security import generate_password_hash, check_password_hash
 
 client = MongoClient('mongodb://Citronnade:Citronnade@ds031271.mongolab.com:31271/softdev2015')
 db = client['softdev2015']
@@ -56,29 +57,42 @@ def check_username(username):
 
 # registers a user. Returns the user_id
 def register_user(username, password):
-    user = {"username":username, "password":password, "rates": [], "comments": []}
+    user = {"username":username, "password":generate_password_hash(password),
+            "rates": [], "comments": []}
     user_id = users.insert(user)
     print "Succesfully registered."
     return user_id
 
 # checks if the username and password logs in
 def check_login(username, password):
-    if users.find_one({"username":username,"password":password}) == None:
+    user = get_user(username)
+    if user == None:
         return False
-    return True
+    if check_password_hash(user['password'], password):
+        print "password to be checked: " + password
+        print "current password hash: " + user['password']
+        return True
+    return False
 
 def get_user(username):
     user = users.find_one({"username":username})
     return user
 
-def get_password(username):
+def get_password(username): #returns a hash
     user = get_user(username)
     return user["password"]
 
-def set_password(username, pwd):
+def set_password(username, password):
     user = get_user(username)
-    user["password"] = pwd
-    print user
+    print "user's _id: " + str(user["_id"])
+    print "before: " + user["password"]
+    user["password"] = generate_password_hash(password)
+    print "after: " + user["password"]
+    users.save(user)
+    #users.update({"_id": user["_id"]}, {"set":{"password":user["password"]}})
+    #users.find_and_modify({"username":username},{"password":user["password"]}) 
+    print users.find_one({"username":username})
+    print users.find_one({"username":username, "password":user["password"]})
 
 def get_users():
     usrs = users.find()
