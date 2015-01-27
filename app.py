@@ -114,7 +114,11 @@ def about():
 @app.route('/myposts')
 @login_required
 def myposts():
-    return render_template("myposts.html")
+    user = database.get_user(session['username'])
+    ids = user['bizcuits'];
+    locs = [database.get_location(i) for i in ids];
+    
+    return render_template("myposts.html",locations=locs, session=session,get_timestamp=get_timestamp)
 
 @app.route('/post/<postid>', methods=["GET","POST"])
 def post(postid=None):
