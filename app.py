@@ -84,20 +84,27 @@ def index():
 @login_required
 def account():
     error=""
+    isError=False
+    success=""
+    isSuccess=False
     if request.method == "POST":
         newPass = request.form['newPass']
         confirmNewPass = request.form['confirmNewPass']
         oldPass = request.form['oldPass']
         if newPass == "" or confirmNewPass == "" or oldPass == "":
             error = "Did you remember to fill out the entire form? (no)"
+            isError=True
         elif newPass!= confirmNewPass:
             error = "Your passwords don't match. Please try again!"
+            isError=True
         elif database.get_password(session['username']) != oldPass:
             error = "You typed in the wrong password..."
+            isError=True
         else:
-            error = "Okay! Your password has now been successfully changed."
+            success = "Okay! Your password has now been successfully changed."
+            isSuccess=True
             database.set_password(session['username'], newPass)
-    return render_template("account.html", error=error)
+    return render_template("account.html", error=error, success=success, isError=isError, isSuccess=isSuccess)
 
 @app.route('/about')
 def about():
@@ -134,48 +141,54 @@ def post(postid=None):
 @app.route('/search', methods = ['GET','POST'])
 def search():
     error = ""
+    isError=False
     if request.method == "POST":
         #location = request.form['query']
         #response = database.search(location)
         zipcode = request.form['zipcode']
         keywords = request.form['keyword']
         if zipcode == "":
-            return render_template("400.html")
+            error = "You forgot to enter a zipcode!"
+            isError=True
+            return render_template("results.html", error=error, isError=isError)
         if keywords != None:
             keywords = keywords.split()
         response = database.search(keywords, zipcode)
         print '~~~~~~~~~~~~~~~~~~~~~'
         print response
-        if response != None:
+        if response != []:
             sortedlocs = database.sort_votes(response)
-            #if 'username' in session:
-               #user = database.get_user(session['username']);
-                #return render_template("results.html", locations=sortedlocs, session=session, users=users, get_timestamp=get_timestamp, get_votes=database.get_votes, user=user)
-            return render_template("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes)
+            return render_templates("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes, isError=isError)
         else:
-            error = "Location not found."
-            return render_template("results.html", error=error)
+            error = "There aren't any Bizcuits in this location yet."
+            isError=True
+    return render_template("results.html", error=error, isError=isError)
     
 @app.route('/submit', methods= ["GET", "POST"])
 def submit():
     error = ""
+    isError = False
     if request.method == "POST":
         name = request.form['locationName']
         address = request.form['streetAddress']
         zipcode = request.form['zipcode']
         desc = request.form['desc']
-        postid = database.add_location(None, name, address, session['username'], zipcode, desc)  
+        if name == "" or address == "" or zipcode == ""  or desc == "":
+            error = "You forgot to fill out something!"
+            return render_template("submit.html", error=error, isError=True)
+        postid = database.add_location(None, name, address, session['username'], zipcode, desc)
         if postid:
             return redirect(url_for('post', postid=postid))
         print "The location already exists."
         return redirect(url_for("submit"))
     elif request.method == "GET":
-        return render_template("submit.html")
+        return render_template("submit.html", error=error, isError=isError)
 
 @app.route('/login', methods = ["GET", "POST"])
 @nologin
 def login():
-    error = ""
+    isError=False
+    error=""
     if request.method == "POST":
         username = request.form['loginUsername'] #assuming SSL connection so this is okay
         password = request.form['loginPassword']
@@ -185,10 +198,10 @@ def login():
             session['username'] = username
             return redirect(url_for('index'))
         else: #invalid
-            #message for invalid user/pass combo
             print "invalid login"
-            
-    return render_template("login.html")
+            isError=True
+            error="Wrong username or password. Please try again!"
+    return render_template("login.html", error=error, isError=isError)
 
 @app.route('/logout')
 @login_required
@@ -199,22 +212,31 @@ def logout():
 @app.route('/register', methods=["GET","POST"])
 @nologin
 def register():
+    isSuccess=False
+    isError=False
+    success=""
+    error=""
     if request.method == "POST":
         username = request.form['registerUsername']
         password = request.form['registerPassword']
         confirmPassword = request.form['confirmPassword']
-        if database.check_username(username):
+        if username=="" or password=="" or confirmPassword=="":
+            isError=True
+            error="You forgot to fill out some required things..."
+        elif database.check_username(username):
             if not password == confirmPassword: #passwords do not match
-                print "passwords do not match"
-                pass #need some kind of message
+                isError=True
+                error="Passwords do not match!"
             else:
                 database.register_user(username,password)
+                isSuccess=True
+                success="Great! You have now successfully registered, "
+                success=success+username
         else:
             #username is taken
-            flash(username + " is taken!")
-            #need some kind of message
-            pass
-    return render_template("register.html")
+            isError=True
+            error="Sorry, your username is already in use!"
+    return render_template("register.html", isError=isError, isSuccess=isSuccess, success=success, error=error)
 
 @app.route('/control',methods=["GET","POST"])
 def control():

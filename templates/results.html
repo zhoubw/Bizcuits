@@ -2,8 +2,40 @@
 {% block content %}
 <body>
   <h1> Search Results:  </h1>
+  {% if isError %}
+  <div class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Error:</span>
+    {{error}}
+  </div>
+  {% endif %}
   {% for location in locations %}
   <div class="row">
+    {% if 'username' in session %}
+    {% if not location['_id']|string in rates %}
+    <div class="col-md-1 text-center">
+      <br>
+      <form method="POST" action={{url_for('search')}}>
+	<button type="submit" class="glyphicon glyphicon-chevron-up upvote" name="upvote" value={{location['_id']}}></button>
+	<p class="votes">{{ get_votes( location.votes ) }}</p>
+	<button type="submit" class="glyphicon glyphicon-chevron-down downvote" name="downvote" value={{location['_id']}}></button>
+      </form>
+    </div>
+    {% else %}
+    <div class="col-md-1 text-center">
+      <br>
+      <p>rated</p>
+      <p class="votes">{{ get_votes( location.votes ) }}</p>
+    </div>      
+    {% endif %}
+    {% else %}
+    <div class="col-md-1 text-center">
+      <br>
+      <a href="/register"><span class="glyphicon glyphicon-chevron-up upvote"></span></a>
+      <p class="votes">{{ get_votes( location.votes ) }}</p>
+      <a href="/register"><span class="glyphicon glyphicon-chevron-down downvote"></span></a>
+    </div>
+    {% endif %}
     <div class="col-md-11">
       <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
       <p class="idea-address"><b>Address:</b> {{ location.address }}</p>
