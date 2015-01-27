@@ -174,10 +174,10 @@ def search():
         #response = database.search(location)
         zipcode = request.form['zipcode']
         keywords = request.form['keyword']
-        #if zipcode == "":
-        #    error = "You forgot to enter a zipcode!"
-        #    isError=True
-        #    return render_template("results.html", error=error, isError=isError)
+        if zipcode == "" and keywords == "":
+            error = "You forgot to enter values!"
+            isError=True
+            return render_template("results.html", error=error, isError=isError)
         if keywords != None:
             keywords = keywords.split()
         response = database.search(keywords, zipcode)
