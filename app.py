@@ -113,20 +113,29 @@ def about():
 
 @app.route('/post/<postid>', methods=["GET","POST"])
 def post(postid=None):
+    isError = False
+    error = ""
     curr_loc = database.get_location(postid)
     print curr_loc
     curr_comments = database.get_comments(postid)
     if request.method == "GET":
         if 'username' in session:
             user = database.get_user(session['username']);
-            return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session,user=user) 
-        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session) 
+            return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session,user=user, error=error, isError=isError) 
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session, error=error, isError=isError) 
     else:
+        if 'username' in session:
+            user=database.get_user(session['username']);
         rated()
         postid = postid
         if "content" in request.form:
             content = request.form['content']
-            if "username" in session:
+            if content == "":
+                error = "You didn't write anything!"
+                isError=True
+                print error
+                return render_template("post.html", error=error, isError=isError, location=curr_loc, get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes, postid=postid, session=session, user=user)
+            elif "username" in session:
                 author = session['username'] 
                 user = database.get_user(author)
                 database.add_comment(None, content, postid, author)
@@ -137,7 +146,7 @@ def post(postid=None):
                 #return redirect(url_for("post",postid=postid,session=session))
 
         #return redirect(url_for("post",postid=postid))
-        return redirect(url_for("post",postid=postid,session=session))
+    return redirect(url_for("post",postid=postid,session=session, isError=isError, error=error))
 
 @app.route('/search', methods = ['GET','POST'])
 def search():
