@@ -4,11 +4,19 @@
 <div class="container">
     <div class = "row">
     {% if locations|length == 0 %}
-    <h3><a href="{{ url_for('submit')}}">You don't have any :'(  Make one!</a></h3>
-    <hr>
-    </div>
+        {% if username == session['username'] %}
+        <h3><a href="{{ url_for('submit')}}">You don't have any :'(  Make one!</a></h3>
+        {% else %}
+        <h3>This user doesn't have any Bizcuits :'(</h3>
+        {% endif %}
+        <hr>
+        </div>
     {% else %}
-    <h3>Your Bizcuits</h3>
+        {% if username == session['username'] %}
+        <h3>Your Bizcuits</h3>
+        {% else %}
+        <h3>{{ username }}'s Bizcuits</h3>
+        {% endif %}
     <hr>
     </div>
 
@@ -18,7 +26,7 @@
             <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
             <p class="idea-address"><b>Address:</b> {{ location.address }}</p>
             <p class="idea-description"><b>Description:</b> {{ location.desc }}</p>
-            <p class="idea-meta">Added by <b>{{ location.author }}</b> on {{ get_timestamp(location['_id']) }}</p>
+            <p class="idea-meta">Added by <b><a href="{{ url_for('myposts',username=location['author']) }}">{{ location.author }}</a></b> on {{ get_timestamp(location['_id']) }}</p>
         </div>
     </div>
     {% endfor %}

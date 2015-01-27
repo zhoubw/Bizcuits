@@ -114,10 +114,10 @@ def account():
 def about():
     return render_template("about.html")
 
-@app.route('/myposts')
+@app.route('/users/<username>')
 @login_required
-def myposts():
-    user = database.get_user(session['username'])
+def myposts(username=None):
+    user = database.get_user(username)
     ids = user['bizcuits'];
     print ids
     #locs = database.get_locations()
@@ -127,7 +127,7 @@ def myposts():
     #locs = [x for x in locs if x['author'] == user]
     #print locs
     #print user['username']
-    return render_template("myposts.html",locations=locs, session=session,get_timestamp=get_timestamp)
+    return render_template("myposts.html",locations=locs, session=session,get_timestamp=get_timestamp, username=username)
 
 @app.route('/post/<postid>', methods=["GET","POST"])
 def post(postid=None):
@@ -174,15 +174,15 @@ def search():
         #response = database.search(location)
         zipcode = request.form['zipcode']
         keywords = request.form['keyword']
-        if zipcode == "":
-            error = "You forgot to enter a zipcode!"
-            isError=True
-            return render_template("results.html", error=error, isError=isError)
+        #if zipcode == "":
+        #    error = "You forgot to enter a zipcode!"
+        #    isError=True
+        #    return render_template("results.html", error=error, isError=isError)
         if keywords != None:
             keywords = keywords.split()
         response = database.search(keywords, zipcode)
-        print '~~~~~~~~~~~~~~~~~~~~~'
-        print response
+        #print '~~~~~~~~~~~~~~~~~~~~~'
+        #print response
         if response != []:
             sortedlocs = database.sort_votes(response)
             return render_template("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes_pst, isError=isError)

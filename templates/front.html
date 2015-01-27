@@ -14,14 +14,14 @@
       <form method="POST" action={{url_for('index')}}>
 	
 	{% if user['_id'] in location['upvotes'] and not user['_id'] in location['downvotes'] %}
-	<p>Upvoted</p>
+	<p><span class="glyphicon glyphicon-chevron-up upvote" style="color:green"></span></p>
 	<p class="votes">{{ get_votes( location ) }}</p>
 	<button type="submit" class="glyphicon glyphicon-chevron-down downvote" name="downvote" value={{location['_id']}}></button>
 
 	{% elif user['_id'] in location['downvotes'] and not user['_id'] in location['upvotes'] %}
 	<button type="submit" class="glyphicon glyphicon-chevron-up upvote" name="upvote" value={{location['_id']}}></button>
 	<p class="votes">{{ get_votes( location ) }}</p>
-	<p>Downvoted</p>
+	<p><span class="glyphicon glyphicon-chevron-down downvote" style="color:red"></span></p>
 
 	{% else %}
 	<button type="submit" class="glyphicon glyphicon-chevron-up upvote" name="upvote" value={{location['_id']}}></button>
@@ -42,7 +42,7 @@
       <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
       <p class="idea-address"><b>Suggested Street Address:</b> {{ location.address }}</p>
       <p class="idea-zipcode"><b>Zipcode:</b> {{ location.zipcode }}</p>
-      <p class="idea-meta">Added by <b>{{ location.author }}</b> on {{ get_timestamp(location['_id']) }}</p>
+      <p class="idea-meta">Added by <b><a href="{{ url_for('myposts',username=location['author']) }}">{{ location.author }}</a></b> on {{ get_timestamp(location['_id']) }}</p>
     </div>
   </div>
   {% endfor %}

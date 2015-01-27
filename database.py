@@ -21,19 +21,31 @@ users = db['users'] #collection
 #    return list(response) #array instead of cursor
 
 def search(keywords, zipcode): #keywords is array or single word?
-    response_zip = locations.find({"zipcode": zipcode})
-    if response_zip == None:
+   # print keywords
+   # print zipcode
+    if (not keywords) and (not zipcode):
         return None
-    response_zip = list(response_zip) #create array
-    print '~~~~~~~~~~~~~~~~~~~~~~~'
-    print keywords
-    print '~~~~~~~~~~~~~~~~~~~~~'
-    print response_zip
-    if not keywords: #find everything in a given zipcode.
-        return response_zip
+    if zipcode and (not keywords):
+        response = locations.find({"zipcode": zipcode})
+        #print 'if1'
+        if response == None:
+            return None
+        response = list(response)
+        return response
+    if (not zipcode) and keywords:
+        #print 'if2'
+        response = locations.find()
+    else:
+        #print 'if3'
+        response = locations.find({"zipcode": zipcode})
+
+    response = list(response) #create array
+    #print response
+    #if not keywords: #find everything in a given zipcode.
+    #    return response
     culled_response = [] #sets aren't really working
     added_responses = [] #so we now have a set for added locations.
-    enum_locs = list(enumerate(response_zip))
+    enum_locs = list(enumerate(response))
     #this gives something like [(0, loc1), (1, loc2)]
     for keyword in keywords:
         keyword = keyword.lower()
@@ -170,7 +182,6 @@ def get_votes(votes): #deprecated?
 def get_votes_pst(post):
     '''very strange new post schema...but I guess there's this.'''
     try:
-        #print len(post['upvotes']) - len(post['downvotes'])
         return len(post['upvotes']) - len(post['downvotes'])
     except:
         return 0
