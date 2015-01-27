@@ -133,7 +133,6 @@ def post(postid=None):
             if content == "":
                 error = "You didn't write anything!"
                 isError=True
-                print error
                 return render_template("post.html", error=error, isError=isError, location=curr_loc, get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes, postid=postid, session=session, user=user)
             elif "username" in session:
                 author = session['username'] 
