@@ -34,7 +34,8 @@
   {% endif %}
   <div class="col-md-11">
     <h1 class="idea-title">{{ location.name }}</h1>
-    <p class="idea-address"><b>Address: </b>{{ location.address }}</p>
+    <p class="idea-address"><b>Suggested Street Address: </b>{{ location.address }}</p>
+    <p class="idea-zipcode"><b>Zipcode: </b>{{ location.zipcode }}</p>
     <p class="idea-description"><b>Description: </b>{{ location.desc }}</p> 
     <p class="idea-meta">Posted by <b>{{ location.author }}</b> on {{ get_timestamp( location['_id'] ) }}</p>
     <hr>
@@ -62,6 +63,15 @@
 </div>
 <hr>
 <p><b>Comments</b></p>
+
+{% if isError %}
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  {{error}}
+</div>
+{% endif %}
+
 {% if 'username' in session %}
 <form method="POST" action="{{url_for('post', postid=location['_id'])}}">
   <div class="form-group">
