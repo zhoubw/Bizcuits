@@ -111,6 +111,11 @@ def account():
 def about():
     return render_template("about.html")
 
+@app.route('/myposts')
+@login_required
+def myposts():
+    return render_template("myposts.html")
+
 @app.route('/post/<postid>', methods=["GET","POST"])
 def post(postid=None):
     isError = False
