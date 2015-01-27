@@ -47,6 +47,7 @@ body > .container{
     color: gray;
 }
 
-.pagination {
+.pagination > li > a{
+    color: #b95d40;
     margin: 0 auto; 
 }
