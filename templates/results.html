@@ -2,7 +2,14 @@
 {% block content %}
   <body>
     <h1> Search Results:  </h1>
-     {% for location in locations %}
+    {% if isError %}
+    <div class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      {{error}}
+    </div>
+    {% endif %}
+    {% for location in locations %}
     <div class="row">
     {% if 'username' in session %}
     {% if not location['_id']|string in rates %}
