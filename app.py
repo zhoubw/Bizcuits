@@ -116,7 +116,9 @@ def about():
 def myposts():
     user = database.get_user(session['username'])
     ids = user['bizcuits'];
-    locs = [database.get_location(i) for i in ids];
+    locs = database.get_locations()
+    #locs = [database.get_location(i) for i in ids]
+    locs = [x for x in locs if x['author'] == user]
     
     return render_template("myposts.html",locations=locs, session=session,get_timestamp=get_timestamp)
 
