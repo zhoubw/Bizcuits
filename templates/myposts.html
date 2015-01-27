@@ -2,24 +2,26 @@
 
 {% block content %}
 <div class="container">
-  <div class = "row">
-{% if locations|length == 0 %}
-<h3><a href="{{ url_for('submit')}}">You don't have any :'(  Make one!</a></h3>
-<hr>
-</div>
-{% else %}
-<h3>Your Bizcuits</h3>
-<hr>
-</div>
-{% for location in locations %}
-<div class="col-md-11">
-  <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
-  <p class="idea-address"><b>Address:</b> {{ location.address }}</p>
-  <p class="idea-description"><b>Description:</b> {{ location.desc }}</p>
-  <p class="idea-meta">Added by <b>{{ location.author }}</b> on {{ get_timestamp(location['_id']) }}</p>
-</div>
-</div>
-{% endfor %}
-{% endif %}
+    <div class = "row">
+    {% if locations|length == 0 %}
+    <h3><a href="{{ url_for('submit')}}">You don't have any :'(  Make one!</a></h3>
+    <hr>
+    </div>
+    {% else %}
+    <h3>Your Bizcuits</h3>
+    <hr>
+    </div>
+
+    {% for location in locations %}
+    <div class = "row">
+        <div class="col-md-11">
+            <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
+            <p class="idea-address"><b>Address:</b> {{ location.address }}</p>
+            <p class="idea-description"><b>Description:</b> {{ location.desc }}</p>
+            <p class="idea-meta">Added by <b>{{ location.author }}</b> on {{ get_timestamp(location['_id']) }}</p>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}
