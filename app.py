@@ -78,7 +78,7 @@ def index():
     if 'username' in session:
         user = database.get_user(session['username']);
         return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes,user=user)
-    return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes)
+    return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes_pst)
 
 @app.route('/account', methods=["GET", "POST"])
 @login_required

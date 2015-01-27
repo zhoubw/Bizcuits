@@ -15,17 +15,17 @@
 	
 	{% if user['_id'] in location['upvotes'] and not user['_id'] in location['downvotes'] %}
 	<p>Upvoted</p>
-	<p class="votes">{{ get_votes( location.votes ) }}</p>
+	<p class="votes">{{ get_votes( location ) }}</p>
 	<button type="submit" class="glyphicon glyphicon-chevron-down downvote" name="downvote" value={{location['_id']}}></button>
 
 	{% elif user['_id'] in location['downvotes'] and not user['_id'] in location['upvotes'] %}
 	<button type="submit" class="glyphicon glyphicon-chevron-up upvote" name="upvote" value={{location['_id']}}></button>
-	<p class="votes">{{ get_votes( location.votes ) }}</p>
+	<p class="votes">{{ get_votes( location ) }}</p>
 	<p>Downvoted</p>
 
 	{% else %}
 	<button type="submit" class="glyphicon glyphicon-chevron-up upvote" name="upvote" value={{location['_id']}}></button>
-	<p class="votes">{{ get_votes( location.votes ) }}</p>
+	<p class="votes">{{ get_votes( location ) }}</p>
 	<button type="submit" class="glyphicon glyphicon-chevron-down downvote" name="downvote" value={{location['_id']}}></button>
 	{% endif %}      
       </form>
