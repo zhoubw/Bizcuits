@@ -58,7 +58,7 @@ def check_username(username):
 # registers a user. Returns the user_id
 def register_user(username, password):
     user = {"username":username, "password":generate_password_hash(password),
-            "rates": [], "comments": []}
+            "rates": [], "bizcuits": []}
     user_id = users.insert(user)
     print "Succesfully registered."
     return user_id
