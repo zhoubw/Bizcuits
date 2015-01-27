@@ -119,13 +119,14 @@ def account():
         elif newPass!= confirmNewPass:
             error = "Your passwords don't match. Please try again!"
             isError=True
-        elif database.get_password(session['username']) != oldPass:
+        elif not database.check_login(session['username'], oldPass):
             error = "You typed in the wrong password..."
             isError=True
         else:
             success = "Okay! Your password has now been successfully changed."
             isSuccess=True
             database.set_password(session['username'], newPass)
+            print newPass
     return render_template("account.html", error=error, success=success, isError=isError, isSuccess=isSuccess)
 
 @app.route('/about')
@@ -219,9 +220,7 @@ def login():
     error=""
     if request.method == "POST":
         username = request.form['loginUsername'] #assuming SSL connection so this is okay
-        password = request.form['loginPassword']
-        #pass_hash = generate_password_hash(password) #wtf do I do with this
-        #use check_password_hash(hash, password) to authenticate
+        password = request.form['loginPassword'] #jk SSL certs cost money
         if database.check_login(username,password):
             session['username'] = username
             return redirect(url_for('index'))
