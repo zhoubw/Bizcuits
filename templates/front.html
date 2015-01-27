@@ -9,7 +9,7 @@
   {% for location in locations %}
   <div class="row">
     {% if 'username' in session %}
-    {% if not location['_id']|string in rates %}
+    {% if (not user['_id'] in location['upvotes']) and not (user['_id'] in location['downvotes']) %}
     <div class="col-md-1 text-center">
       <br>
       <form method="POST" action={{url_for('index')}}>
@@ -21,8 +21,25 @@
     {% else %}
     <div class="col-md-1 text-center">
       <br>
-      <p>rated</p>
-      <p class="votes">{{ get_votes( location.votes ) }}</p>
+      <form method="POST" action={{url_for('index')}}>
+	
+	{% if user['_id'] in location['upvotes'] and not user['_id'] in location['downvotes'] %}
+	<p>Upvoted</p>
+	<p class="votes">{{ get_votes( location.votes ) }}</p>
+	<button type="submit" class="glyphicon glyphicon-chevron-down downvote" name="downvote" value={{location['_id']}}></button>
+	{% else %}
+	
+
+	{% if user['_id'] in location['downvotes'] and not user['_id'] in location['upvotes'] %}
+	<button type="submit" class="glyphicon glyphicon-chevron-up upvote" name="upvote" value={{location['_id']}}></button>
+	<p class="votes">{{ get_votes( location.votes ) }}</p>
+	<p>Downvoted</p>
+
+	{% endif %}
+      {% endif %}      
+      </form>
+
+
     </div>      
     {% endif %}
     {% else %}

@@ -50,38 +50,37 @@ def nologin(f):
 
 def rated():
     if request.method == "POST":
-        user = database.get_user(session['username'])
-        if "upvote" in request.form:
-            _id = request.form['upvote']
-            if 'rates' in user:
-                if _id in user['rates']:
-                    return #yeah this can be better
-            loc = database.get_location(_id)
-            locations.update(
-            #{ '_id':ObjectId(request.form['upvote'])},
-                loc,
-                {'$inc':{'votes.up':1}},
-                upsert=False,
-                multi=False)
-            users.update(
-                user,
-                {'$push':{'rates':_id}}
-            )
-        elif "downvote" in request.form:
-            _id = request.form['downvote']
-            if 'rates' in user:
-                if _id in user['rates']:
-                    return
-            loc = database.get_location(_id)
-            locations.update(
-                #{ '_id':ObjectId(request.form['upvote'])},
-                loc,
-                {'$inc':{'votes.down':1}},
-                upsert=False,
-                multi=False)
-            users.update(
-                user,
-                {'$push':{'rates':_id}})
+        if "username" in session:
+            user = database.get_user(session['username'])
+            if "upvote" in request.form:
+                _id = request.form['upvote']
+                loc = database.get_location(_id)
+                locations.update(
+                    loc,
+                    {'$pull':{'downvotes':user['_id']}},
+                    upsert=False,
+                    multi=False)
+                if not user['_id'] in loc['upvotes']:
+                    locations.update(
+                        loc,
+                        {'$push':{'upvotes':user['_id']}},
+                        upsert=False,
+                        multi=False)
+                    print "added upvote"
+            elif "downvote" in request.form:
+                _id = request.form['downvote']
+                loc = database.get_location(_id)
+                locations.update(
+                    loc,
+                    {'$pull':{'upvotes':user['_id']}},
+                    upsert=False,
+                    multi=False)
+                if not user['_id'] in loc['downvotes']:
+                    locations.update(
+                        loc,
+                        {'$push':{'downvotes':user['_id']}},
+                        upsert=False,
+                        multi=False)
 
 @app.route('/', methods=['GET','POST'])
 #@app.route('/index')
@@ -96,9 +95,8 @@ def index():
     #usrs = database.get_users()
     #print not locations.find_one({'_id':ObjectId('54b01a4b839b007864cfa565')}) in users.find_one({'username':session['username']})['rates']
     if 'username' in session:
-        rates = users.find_one({'username':session['username']})['rates']
-        rates_str = [str(x) for x in rates]
-        return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes,rates=rates_str)
+        user = database.get_user(session['username']);
+        return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes,user=user)
     return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes)
 
 @app.route('/account', methods=["GET", "POST"])

@@ -87,9 +87,11 @@ def add_location(location=None, name=None, address=None, author=None, zipcode=No
     if (name==None) or (address==None) or (author==None) or (zipcode==None) or (desc==None):
         print "Missing fields, failed."
         return False
-    votes = {"up": 1, "down": 0} #vote dict
+    #votes = {"up": 1, "down": 0} #vote dict
+    upvotes = []
+    downvotes = []
     location = {"address": address, "zipcode": zipcode, "name": name,
-                "author": author, "desc": desc, "votes": votes
+                "author": author, "desc": desc, "upvotes": upvotes, "downvotes":downvotes
     }    
     #if locations.find_one({"address": address, "zipcode": zipcode}) == None:
     location_id = locations.insert(location)
