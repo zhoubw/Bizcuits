@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
   <h1> Search Results:  </h1>
+  
   {% if isError %}
   <div class="alert alert-danger" role="alert">
     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -8,14 +9,13 @@
     {{error}}
   </div>
   {% endif %}
+
+
   {% for location in locations %}
-    <div class="col-md-11">
       <h2 class="idea-title"><a href="{{ url_for('post', postid=location['_id'])}}">{{ location.name }}</a></h2>
       <p class="idea-address"><b>Address:</b> {{ location.address }}</p>
       <p class="idea-description"><b>Description:</b> {{ location.desc }}</p>
       <p class="idea-meta">Added by <b>{{ location.author }}</b> on {{ get_timestamp(location['_id']) }}</p>
-    </div>
-  </div>
   {% endfor %}
 </div>
 {% endblock %}

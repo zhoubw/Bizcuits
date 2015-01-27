@@ -21,12 +21,5 @@ Bizcuits
 - [x] Another idea: pins on a Google map?
 
 ##Last things to do
-- [ ] Maps and pins
-- [ ] Comments - only users can comment (careful about the html - comment boxes should not even be displayed for non-account users)
-- [ ] Rating
-- [ ] Search engine
-- [ ] install pytz
-- [ ] install tzlocal
-- Search buttons:
-  - next to search bar
-  - on search results page
+- [x] install pytz
+- [x] install tzlocal
