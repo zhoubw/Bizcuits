@@ -55,32 +55,13 @@ def rated():
             if "upvote" in request.form:
                 _id = request.form['upvote']
                 loc = database.get_location(_id)
-                locations.update(
-                    loc,
-                    {'$pull':{'downvotes':user['_id']}},
-                    upsert=False,
-                    multi=False)
-                if not user['_id'] in loc['upvotes']:
-                    locations.update(
-                        loc,
-                        {'$push':{'upvotes':user['_id']}},
-                        upsert=False,
-                        multi=False)
-                    print "added upvote"
+                locations.update(loc,{'$pull':{'downvotes':user['_id']},'$push':{'upvotes':user['_id']}},upsert=False,multi=False)
+                #locations.update(loc,{'$push':{'upvotes':user['_id']}},upsert=False,multi=False)
             elif "downvote" in request.form:
                 _id = request.form['downvote']
                 loc = database.get_location(_id)
-                locations.update(
-                    loc,
-                    {'$pull':{'upvotes':user['_id']}},
-                    upsert=False,
-                    multi=False)
-                if not user['_id'] in loc['downvotes']:
-                    locations.update(
-                        loc,
-                        {'$push':{'downvotes':user['_id']}},
-                        upsert=False,
-                        multi=False)
+                locations.update(loc,{'$pull':{'upvotes':user['_id']},'$push':{'downvotes':user['_id']}},upsert=False,multi=False)
+                #locations.update(loc,{'$push':{'downvotes':user['_id']}},upsert=False,multi=False)
 
 @app.route('/', methods=['GET','POST'])
 #@app.route('/index')
@@ -129,9 +110,8 @@ def post(postid=None):
     curr_comments = database.get_comments(postid)
     if request.method == "GET":
         if 'username' in session:
-            rates = users.find_one({'username':session['username']})['rates']
-            rates_str = [str(x) for x in rates]
-            return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session,rates=rates_str) 
+            user = database.get_user(session['username']);
+            return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session,user=user) 
         return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session) 
     else:
         rated()
@@ -153,7 +133,6 @@ def post(postid=None):
 
 @app.route('/search', methods = ['GET','POST'])
 def search():
-    rated()
     error = ""
     if request.method == "POST":
         #location = request.form['query']
@@ -169,11 +148,10 @@ def search():
         print response
         if response != None:
             sortedlocs = database.sort_votes(response)
-            if 'username' in session:
-                rates = users.find_one({'username':session['username']})['rates']
-                rates_str = [str(x) for x in rates]
-                return render_template("results.html", locations=sortedlocs, session=session, users=users, get_timestamp=get_timestamp, get_votes=database.get_votes, rates=rates_str)
-            return render_templates("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes)
+            #if 'username' in session:
+               #user = database.get_user(session['username']);
+                #return render_template("results.html", locations=sortedlocs, session=session, users=users, get_timestamp=get_timestamp, get_votes=database.get_votes, user=user)
+            return render_template("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes)
         else:
             error = "Location not found."
             return render_template("results.html", error=error)
