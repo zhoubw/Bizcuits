@@ -171,15 +171,15 @@ def search():
         #response = database.search(location)
         zipcode = request.form['zipcode']
         keywords = request.form['keyword']
-        if zipcode == "":
-            error = "You forgot to enter a zipcode!"
-            isError=True
-            return render_template("results.html", error=error, isError=isError)
+        #if zipcode == "":
+        #    error = "You forgot to enter a zipcode!"
+        #    isError=True
+        #    return render_template("results.html", error=error, isError=isError)
         if keywords != None:
             keywords = keywords.split()
         response = database.search(keywords, zipcode)
-        print '~~~~~~~~~~~~~~~~~~~~~'
-        print response
+        #print '~~~~~~~~~~~~~~~~~~~~~'
+        #print response
         if response != []:
             sortedlocs = database.sort_votes(response)
             return render_template("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes_pst, isError=isError)
