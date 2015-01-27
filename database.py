@@ -66,11 +66,13 @@ def register_user(username, password):
 # checks if the username and password logs in
 def check_login(username, password):
     user = get_user(username)
+    print "user: " + str(user)
     if user == None:
         return False
+    print "password to be checked: " + password
+    print "current password hash: " + user['password']
+    print check_password_hash(user['password'], password)
     if check_password_hash(user['password'], password):
-        print "password to be checked: " + password
-        print "current password hash: " + user['password']
         return True
     return False
 
