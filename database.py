@@ -141,6 +141,7 @@ def get_votes(votes): #deprecated?
 def get_votes_pst(post):
     '''very strange new post schema...but I guess there's this.'''
     try:
+        print len(post['upvotes']) - len(post['downvotes'])
         return len(post['upvotes']) - len(post['downvotes'])
     except:
         return 0

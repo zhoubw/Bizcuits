@@ -77,7 +77,7 @@ def index():
     #print not locations.find_one({'_id':ObjectId('54b01a4b839b007864cfa565')}) in users.find_one({'username':session['username']})['rates']
     if 'username' in session:
         user = database.get_user(session['username']);
-        return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes,user=user)
+        return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes_pst,user=user)
     return render_template("front.html", session=session,users=users,locations=locs,get_timestamp=get_timestamp, get_votes=database.get_votes_pst)
 
 @app.route('/account', methods=["GET", "POST"])
@@ -119,8 +119,8 @@ def post(postid=None):
     if request.method == "GET":
         if 'username' in session:
             user = database.get_user(session['username']);
-            return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session,user=user) 
-        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes,postid=postid,session=session) 
+            return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes_pst,postid=postid,session=session,user=user) 
+        return render_template("post.html", location=curr_loc,get_timestamp=get_timestamp, comments=curr_comments, get_votes=database.get_votes_pst,postid=postid,session=session) 
     else:
         rated()
         postid = postid
@@ -159,7 +159,7 @@ def search():
         print response
         if response != []:
             sortedlocs = database.sort_votes(response)
-            return render_templates("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes, isError=isError)
+            return render_template("results.html", session=session, users=users, locations=sortedlocs, get_timestamp=get_timestamp, get_votes=database.get_votes_pst, isError=isError)
         else:
             error = "There aren't any Bizcuits in this location yet."
             isError=True
