@@ -3,9 +3,9 @@ Bizcuits
 ###Barak Zhou, Max Zhou, Ling Dong, Ivy Wong
 
 ##Link
-[citronnade.mooo.com]([citronnade.mooo.com])
+[citronnade.mooo.com](http://citronnade.mooo.com)
 
-[bizcuits.mooo.com](bizcuits.mooo.com)
+[bizcuits.mooo.com](http://bizcuits.mooo.com)
 
 https://www.youtube.com/watch?v=Tk-SbfsbeoI&feature=youtu.be - turn CC on!
 
